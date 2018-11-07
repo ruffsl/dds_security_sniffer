@@ -1,14 +1,14 @@
-type 'a nonEmptyList = 
+type 'a nonEmptyList =
     | Node of 'a
-    | LinkedNode of 'a * ('a nonEmptyList);;
+    | LinkedNode of 'a * ('a nonEmptyList)
 
-type evalResult = 
+type evalResult =
   | ALLOWED
   | DENIED
   | NONE
   | ERROR
 
-type qualifier = 
+type qualifier =
   | ALLOW
   | DENY
 
@@ -16,11 +16,11 @@ type criteria = {
   topics : string nonEmptyList;
   partition : string list;
   tags : (string * string) list
-} 
+}
 
-type domain = 
-  | DomainId of int 
-  | DomainRange of int * int 
+type domain =
+  | DomainId of int
+  | DomainRange of int * int
 
 type rule = {
   domains : domain nonEmptyList;
@@ -30,8 +30,10 @@ type rule = {
   relay : criteria list
 }
 
-type validity =
-  | TimeRange of int * int
+type validity = {
+  low : int;
+  high : int;
+}
 
 type grant = {
     subject_name : string;
@@ -53,7 +55,8 @@ type subject = {
   domainId : int;
   topic : string;
   partition : string;
-  dataTag : (string * string)
+  dataTag : (string * string);
+  time : int
 }
 
 (*
@@ -63,7 +66,7 @@ let tmp_criteria = {
   tags=[("b","c")]
 }
 let tmp_domain = DomainId(0)
-let tmp_validity = TimeRange(0,1)
+let tmp_validity = {low=0;high=1}
 let tmp_rule = {
   domains=Node(tmp_domain);
   qualifier=ALLOW;
@@ -76,6 +79,6 @@ let tmp_grant = {
   subject_name="tmp";
   validity=tmp_validity;
   rules=Node(tmp_rule);
-  default=DENY 
+  default=DENY
 }
- *)
+*)
