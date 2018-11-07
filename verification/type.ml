@@ -1,38 +1,44 @@
-type a' nonEmptyList =
-  | Node of a'
-  | LinkedNode of a' * (a' nonEmptyList)
+type 'a nonEmptyList = 
+    | Node of 'a
+    | LinkedNode of 'a * ('a nonEmptyList);;
 
-type evalAction = 
-  | ALLOW
-  | DENY
+type evalResult = 
+  | ALLOWED
+  | DENIED
   | NONE
   | ERROR
 
-type action = 
+type qualifier = 
   | ALLOW
   | DENY
 
-(* why tagNameVauePair is list of list *)
-type tagNameValuePair = (string * string) nonEmptyList
+type criteria = {
+  topics : string nonEmptyList;
+  partition : string list;
+  tags : (string * string) list
+} 
 
-type rawCriteria = 
-  | RawCriteria  of string nonEmptyList * string list * tagNameValuePair list
-
-type criteria = rawCriteria nonEmptyList
-
- (* non-neg *)
 type domain = 
   | DomainId of int 
   | DomainRange of int * int 
 
-type rule = 
-  | Rule of domain nonEmptyList * bool * criteria list * criteria list * criteria list
+type rule = {
+  domains : domain nonEmptyList;
+  qualifier : qualifier;
+  publish : criteria list;
+  subscribe : criteria list;
+  relay : criteria list
+}
 
 type validity =
-  | Validity of int of int
+  | TimeRange of int * int
 
-type grant = 
-  | Grant of string * validity * rule nonEmptyList * action 
+type grant = {
+    subject_name : string;
+    validity : validity;
+    rules : rule nonEmptyList;
+    default : qualifier
+}
 
 type permissions = grant nonEmptyList
 
@@ -41,6 +47,35 @@ type subjectAction =
   | SUBSCRIBE
   | RELAY
 
-type subject =
-  | Subject of string * subjectAction * int
+type subject = {
+  subName : string;
+  action : subjectAction;
+  domainId : int;
+  topic : string;
+  partition : string;
+  dataTag : (string * string)
+}
 
+(*
+let tmp_criteria = {
+  topics=Node("tmpTopic");
+  partition=["a"];
+  tags=[("b","c")]
+}
+let tmp_domain = DomainId(0)
+let tmp_validity = TimeRange(0,1)
+let tmp_rule = {
+  domains=Node(tmp_domain);
+  qualifier=ALLOW;
+  publish=[tmp_criteria];
+  subscribe=[];
+  relay=[]
+}
+
+let tmp_grant = {
+  subject_name="tmp";
+  validity=tmp_validity;
+  rules=Node(tmp_rule);
+  default=DENY 
+}
+ *)
