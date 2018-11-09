@@ -2,19 +2,14 @@ type 'a nonEmptyList =
     | Node of 'a
     | LinkedNode of 'a * ('a nonEmptyList)
 
-type evalResult =
-  | ALLOWED
-  | DENIED
-  | NONE
-  | ERROR
-
 type qualifier =
   | ALLOW
   | DENY
+  | NONE
 
 type criteria = {
   topics : string nonEmptyList;
-  partition : string list;
+  partitions : string list;
   tags : (string * string) list
 }
 
@@ -38,7 +33,7 @@ type validity = {
 type grant = {
     subject_name : string;
     validity : validity;
-    rules : rule nonEmptyList;
+    rules : rule list;
     default : qualifier
 }
 
