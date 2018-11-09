@@ -53,11 +53,10 @@ type subject = {
   dataTag : (string * string);
   time : int
 }
-
 (*
 let tmp_criteria = {
   topics=Node("tmpTopic");
-  partition=["a"];
+  partitions=["a"];
   tags=[("b","c")]
 }
 let tmp_domain = DomainId(0)
@@ -73,7 +72,18 @@ let tmp_rule = {
 let tmp_grant = {
   subject_name="tmp";
   validity=tmp_validity;
-  rules=Node(tmp_rule);
+  rules=[tmp_rule];
   default=DENY
+}
+let tmp_permission = Node (tmp_grant)
+let tmp_subject = {
+  subName = "hello";
+  action=PUBLISH;
+  domainId=1;
+  topic="wold";
+  partition="a";
+  dataTag=("a","b");
+  time=1
+
 }
 *)
