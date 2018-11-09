@@ -1,4 +1,24 @@
-let checkCriteria (cri : criteria list) (sub : subject) : bool = true
+let rec inList l target = 
+    match l with
+    | [] -> false
+    | h::t -> h = target || (inList t target)
+
+let rec inNonEmptyList l target = 
+    match l with 
+    | Node(n) -> n = target
+    | LinkedNode (h, t) -> h = target || (inNonEmptyList t target)
+
+
+let rec checkCriteria (cri : criteria list) (sub : subject) : bool =
+    match cri with
+    | [] -> false
+    | h::t ->  
+        let match_criteria criteria sub = 
+            inNonEmptyList criteria.topics sub.topic 
+            && inList criteria.partitions sub.partition
+            && inList criteria.tags sub.dataTag in
+        match_criteria h sub || checkCriteria t sub
+        
 
 let rec match_domain (domains : domain nonEmptyList) (id : int) : bool =
   let nodeAndNext =
@@ -13,22 +33,22 @@ let rec match_domain (domains : domain nonEmptyList) (id : int) : bool =
         | DomainRange(low, high) -> id >= low && id <= high) in
       matched || (hasNext && (match_domain next id))
 
-let rec checkRules (rules : rule list) (sub : subject) : evalResult =
-  match rules with
-  | head::res ->
-    if match_domain head.domains sub.domainId then
+let rec checkRules (rules : rule list) (sub : subject) : qualifier =
+  match rules with 
+  | [] -> NONE
+  | head::tail ->
+    let in_domain = match_domain head.domains sub.domainId in
+     let matched_criteria = 
       let critList =
         (match sub.action with
         | PUBLISH -> head.publish
         | SUBSCRIBE -> head.subscribe
         | RELAY -> head.relay) in
-      if checkCriteria critList sub then
-        (if head.qualifier = ALLOW then ALLOWED else DENIED)
-      else checkRules res sub
-    else checkRules res sub
-  | _ -> NONE
+     checkCriteria critList sub  in
+     if in_domain && matched_criteria then head.qualifier
+     else checkRules tail sub
 
-let evaluate (perm : permissions) (sub : subject) : evalResult =
+let rec evaluate (perm : permissions) (sub : subject) : qualifier =
   let nodeAndNext =
     (match perm with
     | Node(g) -> (g, false, perm)
@@ -39,9 +59,9 @@ let evaluate (perm : permissions) (sub : subject) : evalResult =
         if node.subject_name <> sub.subName then false
         else sub.time >= node.validity.low && sub.time <= node.validity.high in
       if matchedAndValid then
-        let evalRes = checkRules rules sub in
+        let evalRes = checkRules node.rules sub in
         (match evalRes with
-        | NONE -> default
-        | _ -> qualifier)
+        | NONE -> node.default
+        | _  -> evalRes)
       else
-        if hasNext then evaluate next sub curr_t else ERROR
+        if hasNext then evaluate next sub else NONE
