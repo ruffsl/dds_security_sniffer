@@ -3,35 +3,26 @@ let rec inList l target =
     | [] -> false
     | h::t -> h = target || (inList t target)
 
-let rec inNonEmptyList l target = 
-    match l with 
-    | Node(n) -> n = target
-    | LinkedNode (h, t) -> h = target || (inNonEmptyList t target)
-
 
 let rec checkCriteria (cri : criteria list) (sub : subject) : bool =
     match cri with
     | [] -> false
     | h::t ->  
         let match_criteria criteria sub = 
-            inNonEmptyList criteria.topics sub.topic 
-            && inList criteria.partitions sub.partition
-            && inList criteria.tags sub.dataTag in
+                inList criteria.topics sub.topic 
+            && (sub.partition = "" || inList criteria.partitions sub.partition)
+            && (sub.dataTag = ("", "") || inList criteria.tags sub.dataTag) in
         match_criteria h sub || checkCriteria t sub
         
 
-let rec match_domain (domains : domain nonEmptyList) (id : int) : bool =
-  let nodeAndNext =
-    (match domains with
-    | Node(d) -> (d, false, domains)
-    | LinkedNode(d, next) -> (d, false, next)) in
-  match nodeAndNext with
-  | (node, hasNext, next) ->
-      let matched =
-        (match node with
-        | DomainId(did) -> did = id
-        | DomainRange(low, high) -> id >= low && id <= high) in
-      matched || (hasNext && (match_domain next id))
+let rec match_domain (domains : domain list) (id : int) : bool =
+        let checkRange x = 
+                (match x with
+                | DomainId(did) -> did = id
+                | DomainRange(low, high) -> id >= low && id <= high) in
+        match domains with
+        | h::t -> (checkRange h) || (match_domain t id)
+        | [] -> false
 
 let rec checkRules (rules : rule list) (sub : subject) : qualifier =
   match rules with 
@@ -49,12 +40,8 @@ let rec checkRules (rules : rule list) (sub : subject) : qualifier =
      else checkRules tail sub
 
 let rec evaluate (perm : permissions) (sub : subject) : qualifier =
-  let nodeAndNext =
-    (match perm with
-    | Node(g) -> (g, false, perm)
-    | LinkedNode(g, next) -> (g, true, next)) in
-  match nodeAndNext with
-  | (node, hasNext, next) ->
+  match perm with
+  | node::next ->
       let matchedAndValid =
         if node.subject_name <> sub.subName then false
         else sub.time >= node.validity.low && sub.time <= node.validity.high in
@@ -64,4 +51,5 @@ let rec evaluate (perm : permissions) (sub : subject) : qualifier =
         | NONE -> node.default
         | _  -> evalRes)
       else
-        if hasNext then evaluate next sub else NONE
+        evaluate next sub
+  | [] -> NONE
