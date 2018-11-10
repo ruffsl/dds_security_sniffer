@@ -1,4 +1,4 @@
-let rec inList l target = 
+let rec inList l target =
     match l with
     | [] -> false
     | h::t -> h = target || (inList t target)
@@ -7,16 +7,16 @@ let rec inList l target =
 let rec checkCriteria (cri : criteria list) (sub : subject) : bool =
     match cri with
     | [] -> false
-    | h::t ->  
-        let match_criteria criteria sub = 
-                inList criteria.topics sub.topic 
+    | h::t ->
+        let match_criteria criteria sub =
+                inList criteria.topics sub.topic
             && (sub.partition = "" || inList criteria.partitions sub.partition)
             && (sub.dataTag = ("", "") || inList criteria.tags sub.dataTag) in
         match_criteria h sub || checkCriteria t sub
-        
+
 
 let rec match_domain (domains : domain list) (id : int) : bool =
-        let checkRange x = 
+        let checkRange x =
                 (match x with
                 | DomainId(did) -> did = id
                 | DomainRange(low, high) -> id >= low && id <= high) in
@@ -25,11 +25,11 @@ let rec match_domain (domains : domain list) (id : int) : bool =
         | [] -> false
 
 let rec checkRules (rules : rule list) (sub : subject) : qualifier =
-  match rules with 
+  match rules with
   | [] -> NONE
   | head::tail ->
     let in_domain = match_domain head.domains sub.domainId in
-     let matched_criteria = 
+     let matched_criteria =
       let critList =
         (match sub.action with
         | PUBLISH -> head.publish
