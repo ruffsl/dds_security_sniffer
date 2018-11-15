@@ -49,8 +49,8 @@ let isValidDomain d =
 
 let rec isValidDomains ds =
         match ds with
-        | h::t -> (isValidDomain h) && (isValidDomains t)
         | [h] -> (isValidDomain h)
+        | h::t -> (isValidDomain h) && (isValidDomains t)
         | [] -> false
 
 let isValidRule r =
@@ -58,8 +58,8 @@ let isValidRule r =
 
 let rec isValidRules rules =
         match rules with
-        | h::t -> (isValidRule h) && (isValidRules t)
         | [h] -> (isValidRule h)
+        | h::t -> (isValidRule h) && (isValidRules t)
         | [] -> false
 
 let isValidValidity v = v.low >= 0 && v.low < v.high
@@ -73,23 +73,6 @@ let rec isValidPermission p =
         | [] -> false
         | [h] -> isValidGrant h
         | h::t -> (isValidGrant h) && (isValidPermission t)
-
-
-
-let isValid x =
-        match x with
-        | hd::xs -> (isValid hd) && (isValid xs)
-        | [only] -> isValid only
-        | [] -> false
-        | {subject_name=_; validity = v; rules = r; default=_} -> (isValid v) && (isValid r)
-        | {low=lo; high=hi} -> lo >= 0 && hi >= 0 && lo <= hi
-        | {domains=ds; qualifier=_; publish=p; subscribe=s; relay=r} ->
-                        (isValid ds) && (List.length p = 0 || isValid p) && (List.length s = 0 || isValid s) && (List.length r = 0 || isValid r)
-        | {topics=t; partitions=_;tags=_} -> isValid t
-        | "" -> false
-        | _ -> true
-
-
 
 type subjectAction =
   | PUBLISH
