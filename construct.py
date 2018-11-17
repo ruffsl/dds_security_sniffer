@@ -22,7 +22,7 @@ def parseXML(f, G, topics):
     for grant in grants:
         subject = grant.findall("./subject_name")[0].text
         if subject not in G:
-            G.add_node(subject)
+            G.add_node(subject, color='red')
         validity = grant.findall("./validity")[0]
         if validity and validity.findall("./not_before"):
             G.node[subject]['not_before'] = validity.findall("./not_before")[0].text
@@ -36,7 +36,7 @@ def parseXML(f, G, topics):
                     topic = allow.text
                     if topic not in topics:
                         topics.add(topic)
-                        G.add_node(topic)
+                        G.add_node(topic, color='green')
                     G.add_edge(topic, subject)
             allowp = grant.findall("./allow_rule")[0].findall("./publish/topics/topic")
             if allowp:
@@ -44,28 +44,8 @@ def parseXML(f, G, topics):
                     topic = allow.text
                     if topic not in topics:
                         topics.add(topic)
-                        G.add_node(topic)
+                        G.add_node(topic, color='green')
                     G.add_edge(subject, topic)
-        
-def addNode(G, metadata, topics):
-    # Add nodes of the network as vertices
-    for node in metadata.keys():
-        G.add_node(node, allow_sub=str(metadata[node]['allow_sub']), allow_pub=str(metadata[node]['allow_pub']), not_before=metadata[node]['not_before'], not_after=metadata[node]['not_after'], bipartite=0)
-    #Add topics of the network as vertices
-    for t in topics:
-        G.add_node(t, bipartite=1)
-
-def construct(G, metadata, topics):
-    nodes = set(G) - topics
-    # Build edges between nodes and topics
-    for node in nodes:
-        for topic in topics:
-            pass
-    for n, m in itertools.permutations(G.nodes, 2):
-        for perm in metadata[n]['allow_pub']:
-            for p in metadata[m]['allow_sub']:
-                if p == perm:
-                    G.add_edge(n, m)
 
 def plot_graph_figure(G, file_name, view='png'):
     A = nx.nx_agraph.to_agraph(G)
@@ -90,7 +70,4 @@ if __name__ == '__main__':
     topics = set()
     for f in files:
         parseXML(f, G, topics)
-    #addNode(G, metadata, topics)
-    #construct(G, metadata, topics)
-    #nx.write_graphml(G, 'g.xml')
     plot_graph_figure(G, 'G')
