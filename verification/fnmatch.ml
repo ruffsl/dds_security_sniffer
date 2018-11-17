@@ -50,11 +50,10 @@ let rec fnmatch (matchPattern: string list) (matchString:string list) : bool =
             let charsRestAndNot = bracket x in
             (match charsRestAndNot with
             | (chars, x_new, isNot) -> (matchLotsOfChar chars b isNot) && (fnmatch x y)) 
-        | "*" ->
-                 fnmatch x matchString
+        | "*" -> fnmatch matchPattern y || fnmatch x matchString
         | "?" -> fnmatch x y
         | _ -> (a = b) && (fnmatch x y))
     | ([], []) -> true
-    | ([], _) -> false
-    | (_, [])  -> false   
+    | _ -> false
+    [@@adm matchPattern, matchString]    
 ;;
