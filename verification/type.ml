@@ -22,8 +22,8 @@ type rule = {
 }
 
 type validity = {
-  low : float;
-  high : float;
+  low : int;
+  high : int;
 }
 
 type grant = {
@@ -62,7 +62,7 @@ let rec isValidRules rules =
         | h::t -> (isValidRule h) && (isValidRules t)
         | [] -> false
 
-let isValidValidity v = v.low >= 0. && v.low < v.high
+let isValidValidity v = v.low >= 0 && v.low < v.high
 
 let isValidGrant g =
         (g.subject_name <> "") && (isValidValidity g.validity) && (isValidRules g.rules)
