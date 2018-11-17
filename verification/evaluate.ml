@@ -3,14 +3,19 @@ let rec inList l target =
     | [] -> false
     | h::t -> h = target || (inList t target)
 
+let rec inListFnmatch l target =
+    match l with
+    | [] -> false
+    | h::t -> (fnmatch h target) || (fnmatch target h) || (inListFnmatch t target)
+
 
 let rec checkCriteria (cri : criteria list) (sub : subject) : bool =
     match cri with
     | [] -> false
     | h::t ->
         let match_criteria criteria sub =
-                inList criteria.topics sub.topic
-            && (sub.partition = "" || inList criteria.partitions sub.partition)
+                inListFnmatch criteria.topics sub.topic
+            && (sub.partition = "" || inListFnmatch criteria.partitions sub.partition)
             && (sub.dataTag = ("", "") || inList criteria.tags sub.dataTag) in
         match_criteria h sub || checkCriteria t sub
 
