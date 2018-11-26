@@ -39,7 +39,7 @@
             <topic>rq/listener/list_parametersRequest</topic>
             <topic>rq/listener/set_parametersRequest</topic>
             <topic>rq/listener/set_parameters_atomicallyRequest</topic>
-            <topic>rr/describe_parametersReply</topic>
+            <topic>rr/listener/describe_parametersReply</topic>
             <topic>rr/listener/get_parameter_typesReply</topic>
             <topic>rr/listener/get_parametersReply</topic>
             <topic>rr/listener/list_parametersReply</topic>
