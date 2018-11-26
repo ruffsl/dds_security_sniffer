@@ -15,7 +15,7 @@ def getAllXMLFiles(path):
 # Three assumptions are made on xml permission file.
 # 1. Default rule is DENY
 # 2. There is no deny_rule
-# 3. There is no regex
+# 3. There is no expression
 def parseXML(f, G, topics):
     root = ET.parse(f).getroot()
     grants = root.findall("./permissions/grant")
@@ -34,7 +34,7 @@ def parseXML(f, G, topics):
             if allows:
                 for allow in allows:
                     topic = allow.text
-                    if topic not in topics:
+                    if topic not in G:
                         topics.add(topic)
                         G.add_node(topic, color='green')
                     G.add_edge(topic, subject)
@@ -42,7 +42,7 @@ def parseXML(f, G, topics):
             if allowp:
                 for allow in allowp:
                     topic = allow.text
-                    if topic not in topics:
+                    if topic not in G:
                         topics.add(topic)
                         G.add_node(topic, color='green')
                     G.add_edge(subject, topic)
@@ -71,3 +71,4 @@ if __name__ == '__main__':
     for f in files:
         parseXML(f, G, topics)
     plot_graph_figure(G, 'G')
+    nx.write_graphml_lxml(G, 'serializedG.graphml')
