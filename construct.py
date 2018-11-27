@@ -20,32 +20,30 @@ def parseXML(f, G, topics):
     root = ET.parse(f).getroot()
     grants = root.findall("./permissions/grant")
     for grant in grants:
-        subject = grant.findall("./subject_name")[0].text
+        subject = grant.findtext("./subject_name")
         if subject not in G:
             G.add_node(subject, color='red')
-        validity = grant.findall("./validity")[0]
-        if validity and validity.findall("./not_before"):
-            G.node[subject]['not_before'] = validity.findall("./not_before")[0].text
-        if validity and validity.findall("./not_after"):
-            G.node[subject]['not_after'] = validity.findall("./not_after")[0].text
-        allow_rule = grant.findall("./allow_rule")
-        if allow_rule:
-            allows = grant.findall("./allow_rule")[0].findall("./subscribe/topics/topic")
-            if allows:
-                for allow in allows:
-                    topic = allow.text
-                    if topic not in G:
-                        topics.add(topic)
-                        G.add_node(topic, color='green')
-                    G.add_edge(topic, subject)
-            allowp = grant.findall("./allow_rule")[0].findall("./publish/topics/topic")
-            if allowp:
-                for allow in allowp:
-                    topic = allow.text
-                    if topic not in G:
-                        topics.add(topic)
-                        G.add_node(topic, color='green')
-                    G.add_edge(subject, topic)
+        validity = grant.find("./validity")
+        if validity and validity.find("./not_before"):
+            G.node[subject]['not_before'] = validity.findtext("./not_before")
+        if validity and validity.find("./not_after"):
+            G.node[subject]['not_after'] = validity.findtext("./not_after")
+        allow_rules = grant.findall("./allow_rule")
+        for ar in allow_rules:
+            allows = ar.findall("./subscribe/topics/topic")
+            for allow in allows:
+                topic = allow.text
+                if topic not in G:
+                    topics.add(topic)
+                    G.add_node(topic, color='green')
+                G.add_edge(topic, subject)
+            allowp = ar.findall("./publish/topics/topic")
+            for allow in allowp:
+                topic = allow.text
+                if topic not in G:
+                    topics.add(topic)
+                    G.add_node(topic, color='green')
+                G.add_edge(subject, topic)
 
 def plot_graph_figure(G, file_name, view='png'):
     A = nx.nx_agraph.to_agraph(G)
