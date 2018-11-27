@@ -1,11 +1,42 @@
 from IPython.display import display, IFrame, Image, Markdown, SVG
 import os
 import sys
-import networkx as nx
+import fnmatch
 import xml.etree.ElementTree as ET
 import itertools
+import networkx as nx
 
-def getAllXMLFiles(path):
+class DisjointSet:
+    def __init__(self, topics):
+        self.data = dict()
+        self.rank = dict()
+        for topic in topics:
+            self.data[topic] = topic
+            self.rank[1]
+
+    def root(topic):
+        if self.data[topic] == topic:
+            return topic
+        else:
+            self.data[topic] = find(self.data[topic])
+            return self.data[topic]
+
+    def find(t1, t2):
+        return root(t1) == root(t2)
+
+    def union(t1, t2):
+        r1 = root(t1)
+        r2 = root(t2)
+        if r1 != r2:
+            if self.rank[r1] < self.rank[r2]:
+                self.data[r1] = r2
+            elif self.rank[r1] > self.rank[r2]:
+                self.data[r2] = r1
+            else:
+                self.data[r2] = r1
+                self.rank[r1] += 1
+
+def get_all_xml_files(path):
     files = []
     for filename in os.listdir(path):
         if filename.endswith('.xml'):
@@ -16,7 +47,7 @@ def getAllXMLFiles(path):
 # 1. Default rule is DENY
 # 2. There is no deny_rule
 # 3. There is no expression
-def parseXML(f, G, topics):
+def parse_xml(f, G, topics):
     root = ET.parse(f).getroot()
     grants = root.findall("./permissions/grant")
     for grant in grants:
@@ -45,17 +76,31 @@ def parseXML(f, G, topics):
                     G.add_node(topic, color='green')
                 G.add_edge(subject, topic)
 
-def plot_graph_figure(G, file_name, view='png'):
+def connect_topic_nodes(G, topics):
+    ds = DisjointSet(topics)
+    for i, j in itertools.combinations(topics, 2):
+        if fnmatch.fnmatch(i, j):
+            ds.union(i, j)
+            G.add_edge(i, j)
+            G.add_edge(j, i)
+    return ds
+
+def contract_nodes(G, topics, ds):
+    for i, j in itertools.combinations(topics, 2):
+        if ds.find(i, j):
+            nx.contracted_nodes(G, i, j)
+
+def plot_graph_figure(G, file_name, view='pdf'):
     A = nx.nx_agraph.to_agraph(G)
     A.add_subgraph()
-    if view is 'pdf':
+    if view == 'pdf':
         A.draw(file_name + '.' + 'pdf', prog='dot')
         display(IFrame(file_name + '.' + view, width=950, height=300))
-    elif view is 'png':
+    elif view == 'png':
         A.draw(file_name + '.' + 'png', prog='dot')
         A.draw(file_name + '.' + 'pdf', prog='dot')
         display(Image(file_name + '.' + view))
-    elif view is 'svg':
+    elif view == 'svg':
         A.draw(file_name + '.' + 'svg', prog='dot')
         display(SVG(file_name + '.' + view))
     else:
@@ -63,10 +108,14 @@ def plot_graph_figure(G, file_name, view='png'):
 
 if __name__ == '__main__':
     path = sys.argv[1]
-    files = getAllXMLFiles(path)
+    files = get_all_xml_files(path)
     G = nx.MultiDiGraph()
     topics = set()
     for f in files:
-        parseXML(f, G, topics)
+        parse_xml(f, G, topics)
     plot_graph_figure(G, 'G')
+    ds = connect_topic_nodes(G, topics)
+    plot_graph_figure(G, 'connectedG')
+    contract_nodes(G, topics, ds)
+    plot_graph_figure(G, 'contractedG')
     nx.write_graphml_lxml(G, 'serializedG.graphml')
