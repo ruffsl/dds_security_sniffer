@@ -1,152 +1,83 @@
 <?xml version='1.0' encoding='utf-8'?>
-<graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd"><key attr.name="not_after" attr.type="string" for="node" id="d2"/>
-<key attr.name="not_before" attr.type="string" for="node" id="d1"/>
-<key attr.name="color" attr.type="string" for="node" id="d0"/>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd"><key attr.name="color" attr.type="string" for="node" id="d0"/>
 <graph edgedefault="directed"><node id="CN=talker">
   <data key="d0">red</data>
-  <data key="d1">2013-10-26T00:00:00</data>
-  <data key="d2">2023-10-26T22:45:30</data>
 </node>
-<node id="rt/clock">
+<node id="parameter_events">
   <data key="d0">green</data>
 </node>
-<node id="rt/parameter_events">
+<node id="chatter">
   <data key="d0">green</data>
 </node>
-<node id="rr/talker/describe_parametersReply">
+<node id="describe_parametersRequest">
   <data key="d0">green</data>
 </node>
-<node id="rr/talker/get_parameter_typesReply">
+<node id="get_parameter_typesRequest">
   <data key="d0">green</data>
 </node>
-<node id="rr/talker/get_parametersReply">
+<node id="get_parametersRequest">
   <data key="d0">green</data>
 </node>
-<node id="rr/talker/list_parametersReply">
+<node id="list_parametersRequest">
   <data key="d0">green</data>
 </node>
-<node id="rr/talker/set_parametersReply">
+<node id="set_parametersRequest">
   <data key="d0">green</data>
 </node>
-<node id="rr/talker/set_parameters_atomicallyReply">
+<node id="set_parameters_atomicallyRequest">
   <data key="d0">green</data>
 </node>
-<node id="rq/talker/describe_parametersRequest">
+<node id="describe_parametersReply">
   <data key="d0">green</data>
 </node>
-<node id="rq/talker/get_parameter_typesRequest">
+<node id="get_parameter_typesReply">
   <data key="d0">green</data>
 </node>
-<node id="rq/talker/get_parametersRequest">
+<node id="get_parametersReply">
   <data key="d0">green</data>
 </node>
-<node id="rq/talker/list_parametersRequest">
+<node id="list_parametersReply">
   <data key="d0">green</data>
 </node>
-<node id="rq/talker/set_parametersRequest">
+<node id="set_parametersReply">
   <data key="d0">green</data>
 </node>
-<node id="rq/talker/set_parameters_atomicallyRequest">
-  <data key="d0">green</data>
-</node>
-<node id="rt/chatter">
+<node id="set_parameters_atomicallyReply">
   <data key="d0">green</data>
 </node>
 <node id="CN=listener">
   <data key="d0">red</data>
-  <data key="d1">2013-10-26T00:00:00</data>
-  <data key="d2">2023-10-26T22:45:30</data>
 </node>
-<node id="rr/listener/describe_parametersReply">
+<node id="clock">
   <data key="d0">green</data>
 </node>
-<node id="rr/listener/get_parameter_typesReply">
-  <data key="d0">green</data>
-</node>
-<node id="rr/listener/get_parametersReply">
-  <data key="d0">green</data>
-</node>
-<node id="rr/listener/list_parametersReply">
-  <data key="d0">green</data>
-</node>
-<node id="rr/listener/set_parametersReply">
-  <data key="d0">green</data>
-</node>
-<node id="rr/listener/set_parameters_atomicallyReply">
-  <data key="d0">green</data>
-</node>
-<node id="rq/listener/describe_parametersRequest">
-  <data key="d0">green</data>
-</node>
-<node id="rq/listener/get_parameter_typesRequest">
-  <data key="d0">green</data>
-</node>
-<node id="rq/listener/get_parametersRequest">
-  <data key="d0">green</data>
-</node>
-<node id="rq/listener/list_parametersRequest">
-  <data key="d0">green</data>
-</node>
-<node id="rq/listener/set_parametersRequest">
-  <data key="d0">green</data>
-</node>
-<node id="rq/listener/set_parameters_atomicallyRequest">
-  <data key="d0">green</data>
-</node>
-<edge id="0" source="CN=talker" target="rt/parameter_events"/>
-<edge id="0" source="CN=talker" target="rt/chatter"/>
-<edge id="0" source="CN=talker" target="rq/talker/describe_parametersRequest"/>
-<edge id="0" source="CN=talker" target="rq/talker/get_parameter_typesRequest"/>
-<edge id="0" source="CN=talker" target="rq/talker/get_parametersRequest"/>
-<edge id="0" source="CN=talker" target="rq/talker/list_parametersRequest"/>
-<edge id="0" source="CN=talker" target="rq/talker/set_parametersRequest"/>
-<edge id="0" source="CN=talker" target="rq/talker/set_parameters_atomicallyRequest"/>
-<edge id="0" source="CN=talker" target="rr/talker/describe_parametersReply"/>
-<edge id="0" source="CN=talker" target="rr/talker/get_parameter_typesReply"/>
-<edge id="0" source="CN=talker" target="rr/talker/get_parametersReply"/>
-<edge id="0" source="CN=talker" target="rr/talker/list_parametersReply"/>
-<edge id="0" source="CN=talker" target="rr/talker/set_parametersReply"/>
-<edge id="0" source="CN=talker" target="rr/talker/set_parameters_atomicallyReply"/>
-<edge id="0" source="rt/clock" target="CN=talker"/>
-<edge id="0" source="rt/clock" target="CN=listener"/>
-<edge id="0" source="rt/parameter_events" target="CN=talker"/>
-<edge id="0" source="rt/parameter_events" target="CN=listener"/>
-<edge id="0" source="rr/talker/describe_parametersReply" target="CN=talker"/>
-<edge id="0" source="rr/talker/get_parameter_typesReply" target="CN=talker"/>
-<edge id="0" source="rr/talker/get_parametersReply" target="CN=talker"/>
-<edge id="0" source="rr/talker/list_parametersReply" target="CN=talker"/>
-<edge id="0" source="rr/talker/set_parametersReply" target="CN=talker"/>
-<edge id="0" source="rr/talker/set_parameters_atomicallyReply" target="CN=talker"/>
-<edge id="0" source="rq/talker/describe_parametersRequest" target="CN=talker"/>
-<edge id="0" source="rq/talker/get_parameter_typesRequest" target="CN=talker"/>
-<edge id="0" source="rq/talker/get_parametersRequest" target="CN=talker"/>
-<edge id="0" source="rq/talker/list_parametersRequest" target="CN=talker"/>
-<edge id="0" source="rq/talker/set_parametersRequest" target="CN=talker"/>
-<edge id="0" source="rq/talker/set_parameters_atomicallyRequest" target="CN=talker"/>
-<edge id="0" source="rt/chatter" target="CN=listener"/>
-<edge id="0" source="CN=listener" target="rt/parameter_events"/>
-<edge id="0" source="CN=listener" target="rq/listener/describe_parametersRequest"/>
-<edge id="0" source="CN=listener" target="rq/listener/get_parameter_typesRequest"/>
-<edge id="0" source="CN=listener" target="rq/listener/get_parametersRequest"/>
-<edge id="0" source="CN=listener" target="rq/listener/list_parametersRequest"/>
-<edge id="0" source="CN=listener" target="rq/listener/set_parametersRequest"/>
-<edge id="0" source="CN=listener" target="rq/listener/set_parameters_atomicallyRequest"/>
-<edge id="0" source="CN=listener" target="rr/listener/describe_parametersReply"/>
-<edge id="0" source="CN=listener" target="rr/listener/get_parameter_typesReply"/>
-<edge id="0" source="CN=listener" target="rr/listener/get_parametersReply"/>
-<edge id="0" source="CN=listener" target="rr/listener/list_parametersReply"/>
-<edge id="0" source="CN=listener" target="rr/listener/set_parametersReply"/>
-<edge id="0" source="CN=listener" target="rr/listener/set_parameters_atomicallyReply"/>
-<edge id="0" source="rr/listener/describe_parametersReply" target="CN=listener"/>
-<edge id="0" source="rr/listener/get_parameter_typesReply" target="CN=listener"/>
-<edge id="0" source="rr/listener/get_parametersReply" target="CN=listener"/>
-<edge id="0" source="rr/listener/list_parametersReply" target="CN=listener"/>
-<edge id="0" source="rr/listener/set_parametersReply" target="CN=listener"/>
-<edge id="0" source="rr/listener/set_parameters_atomicallyReply" target="CN=listener"/>
-<edge id="0" source="rq/listener/describe_parametersRequest" target="CN=listener"/>
-<edge id="0" source="rq/listener/get_parameter_typesRequest" target="CN=listener"/>
-<edge id="0" source="rq/listener/get_parametersRequest" target="CN=listener"/>
-<edge id="0" source="rq/listener/list_parametersRequest" target="CN=listener"/>
-<edge id="0" source="rq/listener/set_parametersRequest" target="CN=listener"/>
-<edge id="0" source="rq/listener/set_parameters_atomicallyRequest" target="CN=listener"/>
+<edge id="0" source="CN=talker" target="parameter_events"/>
+<edge id="0" source="CN=talker" target="chatter"/>
+<edge id="0" source="CN=talker" target="describe_parametersRequest"/>
+<edge id="0" source="CN=talker" target="get_parameter_typesRequest"/>
+<edge id="0" source="CN=talker" target="get_parametersRequest"/>
+<edge id="0" source="CN=talker" target="list_parametersRequest"/>
+<edge id="0" source="CN=talker" target="set_parametersRequest"/>
+<edge id="0" source="CN=talker" target="set_parameters_atomicallyRequest"/>
+<edge id="0" source="CN=talker" target="describe_parametersReply"/>
+<edge id="0" source="CN=talker" target="get_parameter_typesReply"/>
+<edge id="0" source="CN=talker" target="get_parametersReply"/>
+<edge id="0" source="CN=talker" target="list_parametersReply"/>
+<edge id="0" source="CN=talker" target="set_parametersReply"/>
+<edge id="0" source="CN=talker" target="set_parameters_atomicallyReply"/>
+<edge id="0" source="parameter_events" target="CN=listener"/>
+<edge id="0" source="chatter" target="CN=listener"/>
+<edge id="0" source="describe_parametersRequest" target="CN=listener"/>
+<edge id="0" source="get_parameter_typesRequest" target="CN=listener"/>
+<edge id="0" source="get_parametersRequest" target="CN=listener"/>
+<edge id="0" source="list_parametersRequest" target="CN=listener"/>
+<edge id="0" source="set_parametersRequest" target="CN=listener"/>
+<edge id="0" source="set_parameters_atomicallyRequest" target="CN=listener"/>
+<edge id="0" source="describe_parametersReply" target="CN=listener"/>
+<edge id="0" source="get_parameter_typesReply" target="CN=listener"/>
+<edge id="0" source="get_parametersReply" target="CN=listener"/>
+<edge id="0" source="list_parametersReply" target="CN=listener"/>
+<edge id="0" source="set_parametersReply" target="CN=listener"/>
+<edge id="0" source="set_parameters_atomicallyReply" target="CN=listener"/>
+<edge id="0" source="clock" target="CN=listener"/>
 </graph></graphml>

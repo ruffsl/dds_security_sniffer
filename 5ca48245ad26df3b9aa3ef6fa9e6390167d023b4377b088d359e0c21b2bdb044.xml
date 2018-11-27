@@ -13,40 +13,23 @@
         </domains>
         <subscribe>
           <topics>
-            <topic>rt/clock</topic>
-            <topic>rt/parameter_events</topic>
-            <topic>rt/chatter</topic>
-            <topic>rr/listener/describe_parametersReply</topic>
-            <topic>rr/listener/get_parameter_typesReply</topic>
-            <topic>rr/listener/get_parametersReply</topic>
-            <topic>rr/listener/list_parametersReply</topic>
-            <topic>rr/listener/set_parametersReply</topic>
-            <topic>rr/listener/set_parameters_atomicallyReply</topic>
-            <topic>rq/listener/describe_parametersRequest</topic>
-            <topic>rq/listener/get_parameter_typesRequest</topic>
-            <topic>rq/listener/get_parametersRequest</topic>
-            <topic>rq/listener/list_parametersRequest</topic>
-            <topic>rq/listener/set_parametersRequest</topic>
-            <topic>rq/listener/set_parameters_atomicallyRequest</topic>
+            <topic>clock</topic>
+            <topic>parameter_events</topic>
+            <topic>chatter</topic>
+            <topic>describe_parametersReply</topic>
+            <topic>get_parameter_typesReply</topic>
+            <topic>get_parametersReply</topic>
+            <topic>list_parametersReply</topic>
+            <topic>set_parametersReply</topic>
+            <topic>set_parameters_atomicallyReply</topic>
+            <topic>describe_parametersRequest</topic>
+            <topic>get_parameter_typesRequest</topic>
+            <topic>get_parametersRequest</topic>
+            <topic>list_parametersRequest</topic>
+            <topic>set_parametersRequest</topic>
+            <topic>set_parameters_atomicallyRequest</topic>
           </topics>
         </subscribe>
-        <publish>
-          <topics>
-            <topic>rt/parameter_events</topic>
-            <topic>rq/listener/describe_parametersRequest</topic>
-            <topic>rq/listener/get_parameter_typesRequest</topic>
-            <topic>rq/listener/get_parametersRequest</topic>
-            <topic>rq/listener/list_parametersRequest</topic>
-            <topic>rq/listener/set_parametersRequest</topic>
-            <topic>rq/listener/set_parameters_atomicallyRequest</topic>
-            <topic>rr/listener/describe_parametersReply</topic>
-            <topic>rr/listener/get_parameter_typesReply</topic>
-            <topic>rr/listener/get_parametersReply</topic>
-            <topic>rr/listener/list_parametersReply</topic>
-            <topic>rr/listener/set_parametersReply</topic>
-            <topic>rr/listener/set_parameters_atomicallyReply</topic>
-          </topics>
-        </publish>
       </allow_rule>
       <default>DENY</default>
     </grant>
