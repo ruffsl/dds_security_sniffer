@@ -1,7 +1,9 @@
+#program
 #require "xml-light"
+#require "ISO8601"
 open Xml
+open ISO8601
 #use "type.ml"
-#use "time.ml"
 
 exception Wrong_parse of string;;
 
@@ -23,15 +25,12 @@ let get_PCData_from_elem dom =
             raise (Wrong_parse "should not be Xml.PCData");;
 
 let parse_string_to_time str = 
-    try
-    Scanf.sscanf str "%d-%d-%dT%d:%d:%d" time_to_float
-    with End_of_file -> raise (Wrong_parse "Ill format time stamp")
+    Z.of_float (ISO8601.Permissive.date str)
 
-let rec parse_tag_list tag_list = 
+let parse_tag_list tag_list = 
     match tag_list with
-    | k::v::t -> let kv_list = parse_tag_list t in
-            ((get_PCData_from_elem k), (get_PCData_from_elem v))::kv_list
-    | [] -> []
+    | k::v::t -> 
+            ((get_PCData_from_elem k), (get_PCData_from_elem v))
     | _ -> raise (Wrong_parse "should be key value pair");;
 
 let parse_data_tags tag = 
@@ -64,16 +63,16 @@ let rec parse_criteria_internal l =
     | h::t ->
         (match h with
 		| Xml.Element (tag_name, attributes, children) ->
-				let topics, partitions, tags = parse_criteria_internal t in 
-				if tag_name = "topics" 
-                then (List.map get_PCData_from_elem children)@topics, partitions, tags
-				else if tag_name = "partitions" 
-                then topics, (List.map get_PCData_from_elem children)@partitions, tags
-				else if tag_name = "data_tags" 
-                then topics, partitions, (List.concat (List.map parse_data_tags children))@tags
-				else raise (Wrong_parse "wrong element inside criteria")
-        | Xml.PCData s -> 
-            raise (Wrong_parse "should not be Xml.PCData"));;
+                        let topics, partitions, tags = parse_criteria_internal t in 
+                        if tag_name = "topics" 
+                                then (List.map get_PCData_from_elem children)@topics, partitions, tags
+                        else if tag_name = "partitions" 
+                                then topics, (List.map get_PCData_from_elem children)@partitions, tags
+                        else if tag_name = "data_tags" 
+                                then topics, partitions, (List.map parse_data_tags children)@tags
+                        else raise (Wrong_parse "wrong element inside criteria")
+                | Xml.PCData s -> 
+                raise (Wrong_parse "should not be Xml.PCData"));;
 
 let parse_criteria crt = 
     match crt with 
@@ -87,13 +86,19 @@ let parse_criteria crt =
     | Xml.PCData s -> 
             print_endline (Xml.to_string crt);
             raise (Wrong_parse "should not be Xml.PCData");;
+ 
 
 let parse_domain_range domain = 
     match domain with 
     | Xml.Element (tag_name, attributes, children) ->
-        (match children with 
-        | [max] -> DomainRange (0, int_of_string (get_PCData_from_elem max))
-        | min::max::[] -> DomainRange (int_of_string (get_PCData_from_elem min), int_of_string (get_PCData_from_elem max))
+        (match children with
+        | [elem] ->
+           (match elem with 
+           | Xml.Element (min_or_max, _, _) -> 
+             if min_or_max = "min" then DomainRange (Z.of_int (int_of_string (get_PCData_from_elem elem)),  233) (* Max DDS Domain ID *)
+             else DomainRange (0, Z.of_int (int_of_string (get_PCData_from_elem elem)))
+           | Xml.PCData s -> raise (Wrong_parse "should not be Xml.PCData"))
+        | min::max::[] -> DomainRange (Z.of_int (int_of_string (get_PCData_from_elem min)), Z.of_int (int_of_string (get_PCData_from_elem max)))
         | _ ->  raise (Wrong_parse "should not be empty domain"))
     | Xml.PCData s -> 
             print_endline (Xml.to_string domain);
@@ -103,7 +108,7 @@ let parse_domain_range domain =
 let parse_single_domain domain = 
     match domain with 
     | Xml.Element (tag_name, attributes, children) ->
-            if tag_name = "id" then DomainId (int_of_string (get_PCData_from_elem domain))
+            if tag_name = "id" then DomainId (Z.of_int (int_of_string (get_PCData_from_elem domain)))
             else parse_domain_range domain
     | Xml.PCData s -> 
             print_endline (Xml.to_string domain);
@@ -124,15 +129,15 @@ let rec parse_qualifier_list qual_list =
     | h::t -> 
         (match h with 
 		| Xml.Element (tag_name, attributes, children) ->
-				let pub_list, sub_list, rel_list = parse_qualifier_list t in 
-				if tag_name = "publish" 
-				then (parse_criteria h)::pub_list, sub_list, rel_list
-				else if tag_name = "subscribe" 
-				then pub_list, (parse_criteria h)::sub_list, rel_list
-				else if tag_name = "relay" 
-				then pub_list, sub_list, (parse_criteria h)::rel_list
-				else raise (Wrong_parse "wrong criteria")
-        | Xml.PCData s -> raise (Wrong_parse "should not be Xml.PCData"));;
+                        let pub_list, sub_list, rel_list = parse_qualifier_list t in 
+                        if tag_name = "publish" 
+                        then (parse_criteria h)::pub_list, sub_list, rel_list
+                        else if tag_name = "subscribe" 
+                        then pub_list, (parse_criteria h)::sub_list, rel_list
+                        else if tag_name = "relay" 
+                        then pub_list, sub_list, (parse_criteria h)::rel_list
+                        else raise (Wrong_parse "wrong criteria")
+                | Xml.PCData s -> raise (Wrong_parse "should not be Xml.PCData"));;
 
 let parse_single_rule r =
    match r with 
