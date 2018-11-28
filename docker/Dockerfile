@@ -20,11 +20,13 @@ RUN sudo apt-get update && sudo apt-get install -y \
     && sudo rm -rf /var/lib/apt/lists/*
 
 # install python dependencies
-COPY python_requirements.txt .
-RUN sudo pip3 install -r python_requirements.txt
+RUN sudo pip3 install \
+        jupyter \
+        networkx \
+        pexpect
 
 COPY ./entrypoint.sh /
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["imandra-repl"]
 
-# docker run -it --rm -v ${HOME}/.imandra:/home/opam/.imandra -p 8000:8000 this_image 
+# docker run -it --rm -v ${HOME}/.imandra:/home/opam/.imandra -p 8000:8000 this_image

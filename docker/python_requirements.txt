@@ -1,5 +1,0 @@
-# requirements.txt
-# http://pip.readthedocs.io/en/stable/reference/pip_install/#requirements-file-format
-
-# keymint dependencies from PyPI
-pexpect
