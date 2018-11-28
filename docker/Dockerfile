@@ -13,12 +13,6 @@ RUN opam install \
         ISO8601 \
         xml-light
 
-COPY ./entrypoint.sh /
-ENTRYPOINT ["/entrypoint.sh"]
-CMD ["imandra-repl"]
-
-# docker run -it --rm -v ${HOME}/.imandra:/home/opam/.imandra -p 8000:8000 this_image 
-
 # install package managers
 RUN sudo apt-get update && sudo apt-get install -y \
         python3-pip \
