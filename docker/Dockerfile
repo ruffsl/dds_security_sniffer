@@ -9,7 +9,8 @@ RUN sudo apt-get update && sudo apt-get install -y \
     && sudo rm -rf /var/lib/apt/lists/*
 
 # install ocaml moduals
-RUN opam install \
+RUN eval $(opam env --switch=/usr/local/var/imandra --set-switch) \
+    && opam install \
         ISO8601 \
         xml-light
 
