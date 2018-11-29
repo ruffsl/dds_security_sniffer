@@ -6,17 +6,33 @@
 <node id="CN=listener">
   <data key="d0">red</data>
 </node>
+<edge id="0" source="CN=talker" target="CN=talker"/>
+<edge id="1" source="CN=talker" target="CN=talker"/>
+<edge id="2" source="CN=talker" target="CN=talker"/>
+<edge id="3" source="CN=talker" target="CN=talker"/>
+<edge id="4" source="CN=talker" target="CN=talker"/>
+<edge id="5" source="CN=talker" target="CN=talker"/>
+<edge id="6" source="CN=talker" target="CN=talker"/>
+<edge id="7" source="CN=talker" target="CN=talker"/>
+<edge id="8" source="CN=talker" target="CN=talker"/>
+<edge id="9" source="CN=talker" target="CN=talker"/>
+<edge id="10" source="CN=talker" target="CN=talker"/>
+<edge id="11" source="CN=talker" target="CN=talker"/>
+<edge id="12" source="CN=talker" target="CN=talker"/>
 <edge id="0" source="CN=talker" target="CN=listener"/>
 <edge id="1" source="CN=talker" target="CN=listener"/>
-<edge id="2" source="CN=talker" target="CN=listener"/>
-<edge id="3" source="CN=talker" target="CN=listener"/>
-<edge id="4" source="CN=talker" target="CN=listener"/>
-<edge id="5" source="CN=talker" target="CN=listener"/>
-<edge id="6" source="CN=talker" target="CN=listener"/>
-<edge id="7" source="CN=talker" target="CN=listener"/>
-<edge id="8" source="CN=talker" target="CN=listener"/>
-<edge id="9" source="CN=talker" target="CN=listener"/>
-<edge id="10" source="CN=talker" target="CN=listener"/>
-<edge id="11" source="CN=talker" target="CN=listener"/>
-<edge id="12" source="CN=talker" target="CN=listener"/>
+<edge id="0" source="CN=listener" target="CN=talker"/>
+<edge id="0" source="CN=listener" target="CN=listener"/>
+<edge id="1" source="CN=listener" target="CN=listener"/>
+<edge id="2" source="CN=listener" target="CN=listener"/>
+<edge id="3" source="CN=listener" target="CN=listener"/>
+<edge id="4" source="CN=listener" target="CN=listener"/>
+<edge id="5" source="CN=listener" target="CN=listener"/>
+<edge id="6" source="CN=listener" target="CN=listener"/>
+<edge id="7" source="CN=listener" target="CN=listener"/>
+<edge id="8" source="CN=listener" target="CN=listener"/>
+<edge id="9" source="CN=listener" target="CN=listener"/>
+<edge id="10" source="CN=listener" target="CN=listener"/>
+<edge id="11" source="CN=listener" target="CN=listener"/>
+<edge id="12" source="CN=listener" target="CN=listener"/>
 </graph></graphml>
