@@ -27,6 +27,7 @@
             <topic>list_parametersReply</topic>
             <topic>set_parametersReply</topic>
             <topic>set_parameters_atomicallyReply</topic>
+	    <topic>listener*</topic>
           </topics>
         </publish>
       </allow_rule>

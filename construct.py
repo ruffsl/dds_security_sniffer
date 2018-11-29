@@ -12,21 +12,21 @@ class DisjointSet:
         self.rank = dict()
         for topic in topics:
             self.data[topic] = topic
-            self.rank[1]
+            self.rank[topic] = 1
 
-    def root(topic):
+    def root(self, topic):
         if self.data[topic] == topic:
             return topic
         else:
-            self.data[topic] = find(self.data[topic])
+            self.data[topic] = self.root(self.data[topic])
             return self.data[topic]
 
-    def find(t1, t2):
-        return root(t1) == root(t2)
+    def find(self, t1, t2):
+        return self.root(t1) == self.root(t2)
 
-    def union(t1, t2):
-        r1 = root(t1)
-        r2 = root(t2)
+    def union(self, t1, t2):
+        r1 = self.root(t1)
+        r2 = self.root(t2)
         if r1 != r2:
             if self.rank[r1] < self.rank[r2]:
                 self.data[r1] = r2
@@ -35,6 +35,9 @@ class DisjointSet:
             else:
                 self.data[r2] = r1
                 self.rank[r1] += 1
+
+    def __str__(self):
+        return str(self.data)
 
 def get_all_xml_files(path):
     files = []
@@ -79,16 +82,46 @@ def parse_xml(f, G, topics):
 def connect_topic_nodes(G, topics):
     ds = DisjointSet(topics)
     for i, j in itertools.combinations(topics, 2):
-        if fnmatch.fnmatch(i, j):
+        if fnmatch.fnmatch(i, j) or fnmatch.fnmatch(j, i):
             ds.union(i, j)
             G.add_edge(i, j)
             G.add_edge(j, i)
     return ds
 
 def contract_nodes(G, topics, ds):
-    for i, j in itertools.combinations(topics, 2):
-        if ds.find(i, j):
-            nx.contracted_nodes(G, i, j)
+    sets = dict()
+    for t in topics:
+        root = ds.root(t)
+        if root not in sets:
+            sets[root] = [t]
+        else:
+            sets[root].append(t)
+    for k, v in sets.items():
+        G = contract_nodes_in_list(G, k, v)
+    return G
+
+def contract_nodes_in_list(G, k, l):
+    for n in l:
+        if n != k:
+            H = nx.contracted_nodes(G, k, n, self_loops=False)
+            label = k + ', ' + n
+            G = nx.relabel_nodes(H, {k: label})
+            k = label
+            G.nodes[k]['color'] = 'green'
+    return G
+
+# TODO: Correct the implementation below
+def remove_topics(G):
+    nodes = [x for x, y in G.nodes(data=True) if y['color'] == 'red']
+    topics = [x for x, y in G.nodes(data=True) if y['color'] == 'green']
+    H = G.copy()
+    for n in nodes:
+        for nei in G.neighbors(n):
+            for nn in G.neighbors(nei):
+                H.add_edge(n, nn)
+    for t in topics:
+        H.remove_node(t)
+    return H
 
 def plot_graph_figure(G, file_name, view='pdf'):
     A = nx.nx_agraph.to_agraph(G)
@@ -116,6 +149,8 @@ if __name__ == '__main__':
     plot_graph_figure(G, 'G')
     ds = connect_topic_nodes(G, topics)
     plot_graph_figure(G, 'connectedG')
-    contract_nodes(G, topics, ds)
+    G = contract_nodes(G, topics, ds)
     plot_graph_figure(G, 'contractedG')
+    G = remove_topics(G)
+    plot_graph_figure(G, 'cleanedG')
     nx.write_graphml_lxml(G, 'serializedG.graphml')
