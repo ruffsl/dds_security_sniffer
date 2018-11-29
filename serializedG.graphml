@@ -3,81 +3,20 @@
 <graph edgedefault="directed"><node id="CN=talker">
   <data key="d0">red</data>
 </node>
-<node id="parameter_events">
-  <data key="d0">green</data>
-</node>
-<node id="chatter">
-  <data key="d0">green</data>
-</node>
-<node id="describe_parametersRequest">
-  <data key="d0">green</data>
-</node>
-<node id="get_parameter_typesRequest">
-  <data key="d0">green</data>
-</node>
-<node id="get_parametersRequest">
-  <data key="d0">green</data>
-</node>
-<node id="list_parametersRequest">
-  <data key="d0">green</data>
-</node>
-<node id="set_parametersRequest">
-  <data key="d0">green</data>
-</node>
-<node id="set_parameters_atomicallyRequest">
-  <data key="d0">green</data>
-</node>
-<node id="describe_parametersReply">
-  <data key="d0">green</data>
-</node>
-<node id="get_parameter_typesReply">
-  <data key="d0">green</data>
-</node>
-<node id="get_parametersReply">
-  <data key="d0">green</data>
-</node>
-<node id="list_parametersReply">
-  <data key="d0">green</data>
-</node>
-<node id="set_parametersReply">
-  <data key="d0">green</data>
-</node>
-<node id="set_parameters_atomicallyReply">
-  <data key="d0">green</data>
-</node>
 <node id="CN=listener">
   <data key="d0">red</data>
 </node>
-<node id="clock">
-  <data key="d0">green</data>
-</node>
-<edge id="0" source="CN=talker" target="parameter_events"/>
-<edge id="0" source="CN=talker" target="chatter"/>
-<edge id="0" source="CN=talker" target="describe_parametersRequest"/>
-<edge id="0" source="CN=talker" target="get_parameter_typesRequest"/>
-<edge id="0" source="CN=talker" target="get_parametersRequest"/>
-<edge id="0" source="CN=talker" target="list_parametersRequest"/>
-<edge id="0" source="CN=talker" target="set_parametersRequest"/>
-<edge id="0" source="CN=talker" target="set_parameters_atomicallyRequest"/>
-<edge id="0" source="CN=talker" target="describe_parametersReply"/>
-<edge id="0" source="CN=talker" target="get_parameter_typesReply"/>
-<edge id="0" source="CN=talker" target="get_parametersReply"/>
-<edge id="0" source="CN=talker" target="list_parametersReply"/>
-<edge id="0" source="CN=talker" target="set_parametersReply"/>
-<edge id="0" source="CN=talker" target="set_parameters_atomicallyReply"/>
-<edge id="0" source="parameter_events" target="CN=listener"/>
-<edge id="0" source="chatter" target="CN=listener"/>
-<edge id="0" source="describe_parametersRequest" target="CN=listener"/>
-<edge id="0" source="get_parameter_typesRequest" target="CN=listener"/>
-<edge id="0" source="get_parametersRequest" target="CN=listener"/>
-<edge id="0" source="list_parametersRequest" target="CN=listener"/>
-<edge id="0" source="set_parametersRequest" target="CN=listener"/>
-<edge id="0" source="set_parameters_atomicallyRequest" target="CN=listener"/>
-<edge id="0" source="describe_parametersReply" target="CN=listener"/>
-<edge id="0" source="get_parameter_typesReply" target="CN=listener"/>
-<edge id="0" source="get_parametersReply" target="CN=listener"/>
-<edge id="0" source="list_parametersReply" target="CN=listener"/>
-<edge id="0" source="set_parametersReply" target="CN=listener"/>
-<edge id="0" source="set_parameters_atomicallyReply" target="CN=listener"/>
-<edge id="0" source="clock" target="CN=listener"/>
+<edge id="0" source="CN=talker" target="CN=listener"/>
+<edge id="1" source="CN=talker" target="CN=listener"/>
+<edge id="2" source="CN=talker" target="CN=listener"/>
+<edge id="3" source="CN=talker" target="CN=listener"/>
+<edge id="4" source="CN=talker" target="CN=listener"/>
+<edge id="5" source="CN=talker" target="CN=listener"/>
+<edge id="6" source="CN=talker" target="CN=listener"/>
+<edge id="7" source="CN=talker" target="CN=listener"/>
+<edge id="8" source="CN=talker" target="CN=listener"/>
+<edge id="9" source="CN=talker" target="CN=listener"/>
+<edge id="10" source="CN=talker" target="CN=listener"/>
+<edge id="11" source="CN=talker" target="CN=listener"/>
+<edge id="12" source="CN=talker" target="CN=listener"/>
 </graph></graphml>
