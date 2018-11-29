@@ -110,7 +110,6 @@ def contract_nodes_in_list(G, k, l):
             G.nodes[k]['color'] = 'green'
     return G
 
-# TODO: Correct the implementation below
 def remove_topics(G):
     nodes = [x for x, y in G.nodes(data=True) if y['color'] == 'red']
     topics = [x for x, y in G.nodes(data=True) if y['color'] == 'green']
