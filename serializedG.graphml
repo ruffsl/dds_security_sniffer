@@ -1,38 +1,81 @@
 <?xml version='1.0' encoding='utf-8'?>
 <graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd"><key attr.name="color" attr.type="string" for="node" id="d0"/>
-<graph edgedefault="directed"><node id="CN=talker">
+<graph edgedefault="directed"><node id="CN=G1_talker4">
   <data key="d0">red</data>
 </node>
-<node id="CN=listener">
+<node id="CN=G1_listener1">
   <data key="d0">red</data>
 </node>
-<edge id="0" source="CN=talker" target="CN=talker"/>
-<edge id="1" source="CN=talker" target="CN=talker"/>
-<edge id="2" source="CN=talker" target="CN=talker"/>
-<edge id="3" source="CN=talker" target="CN=talker"/>
-<edge id="4" source="CN=talker" target="CN=talker"/>
-<edge id="5" source="CN=talker" target="CN=talker"/>
-<edge id="6" source="CN=talker" target="CN=talker"/>
-<edge id="7" source="CN=talker" target="CN=talker"/>
-<edge id="8" source="CN=talker" target="CN=talker"/>
-<edge id="9" source="CN=talker" target="CN=talker"/>
-<edge id="10" source="CN=talker" target="CN=talker"/>
-<edge id="11" source="CN=talker" target="CN=talker"/>
-<edge id="12" source="CN=talker" target="CN=talker"/>
-<edge id="0" source="CN=talker" target="CN=listener"/>
-<edge id="1" source="CN=talker" target="CN=listener"/>
-<edge id="0" source="CN=listener" target="CN=talker"/>
-<edge id="0" source="CN=listener" target="CN=listener"/>
-<edge id="1" source="CN=listener" target="CN=listener"/>
-<edge id="2" source="CN=listener" target="CN=listener"/>
-<edge id="3" source="CN=listener" target="CN=listener"/>
-<edge id="4" source="CN=listener" target="CN=listener"/>
-<edge id="5" source="CN=listener" target="CN=listener"/>
-<edge id="6" source="CN=listener" target="CN=listener"/>
-<edge id="7" source="CN=listener" target="CN=listener"/>
-<edge id="8" source="CN=listener" target="CN=listener"/>
-<edge id="9" source="CN=listener" target="CN=listener"/>
-<edge id="10" source="CN=listener" target="CN=listener"/>
-<edge id="11" source="CN=listener" target="CN=listener"/>
-<edge id="12" source="CN=listener" target="CN=listener"/>
+<node id="CN=G2_listener4">
+  <data key="d0">red</data>
+</node>
+<node id="CN=G1_talker3">
+  <data key="d0">red</data>
+</node>
+<node id="CN=G2_talker1">
+  <data key="d0">red</data>
+</node>
+<node id="CN=G2_listener3">
+  <data key="d0">red</data>
+</node>
+<node id="CN=G1_talker2">
+  <data key="d0">red</data>
+</node>
+<node id="CN=G1_listener3">
+  <data key="d0">red</data>
+</node>
+<node id="CN=G2_talker2">
+  <data key="d0">red</data>
+</node>
+<node id="CN=G2_listener2">
+  <data key="d0">red</data>
+</node>
+<node id="CN=G2_listener1">
+  <data key="d0">red</data>
+</node>
+<node id="CN=G1_talker1">
+  <data key="d0">red</data>
+</node>
+<node id="CN=G2_talker3">
+  <data key="d0">red</data>
+</node>
+<node id="CN=G1_talker5">
+  <data key="d0">red</data>
+</node>
+<node id="CN=G2_listener5">
+  <data key="d0">red</data>
+</node>
+<node id="CN=G1_listener2">
+  <data key="d0">red</data>
+</node>
+<edge id="0" source="CN=G1_talker4" target="CN=G1_listener3"/>
+<edge id="0" source="CN=G1_talker4" target="CN=G1_listener2"/>
+<edge id="0" source="CN=G1_talker4" target="CN=G1_listener1"/>
+<edge id="0" source="CN=G1_talker3" target="CN=G1_listener3"/>
+<edge id="0" source="CN=G1_talker3" target="CN=G1_listener2"/>
+<edge id="0" source="CN=G1_talker3" target="CN=G1_listener1"/>
+<edge id="0" source="CN=G2_talker1" target="CN=G2_listener4"/>
+<edge id="0" source="CN=G2_talker1" target="CN=G2_listener3"/>
+<edge id="0" source="CN=G2_talker1" target="CN=G2_listener2"/>
+<edge id="0" source="CN=G2_talker1" target="CN=G2_listener1"/>
+<edge id="0" source="CN=G2_talker1" target="CN=G2_listener5"/>
+<edge id="0" source="CN=G1_talker2" target="CN=G1_listener3"/>
+<edge id="0" source="CN=G1_talker2" target="CN=G1_listener2"/>
+<edge id="0" source="CN=G1_talker2" target="CN=G1_listener1"/>
+<edge id="0" source="CN=G2_talker2" target="CN=G2_listener4"/>
+<edge id="0" source="CN=G2_talker2" target="CN=G2_listener3"/>
+<edge id="0" source="CN=G2_talker2" target="CN=G2_listener2"/>
+<edge id="0" source="CN=G2_talker2" target="CN=G2_listener1"/>
+<edge id="0" source="CN=G2_talker2" target="CN=G2_listener5"/>
+<edge id="0" source="CN=G1_talker1" target="CN=G1_listener3"/>
+<edge id="0" source="CN=G1_talker1" target="CN=G1_listener2"/>
+<edge id="0" source="CN=G1_talker1" target="CN=G1_listener1"/>
+<edge id="0" source="CN=G2_talker3" target="CN=G2_listener4"/>
+<edge id="0" source="CN=G2_talker3" target="CN=G2_listener3"/>
+<edge id="0" source="CN=G2_talker3" target="CN=G2_listener2"/>
+<edge id="0" source="CN=G2_talker3" target="CN=G2_listener1"/>
+<edge id="0" source="CN=G2_talker3" target="CN=G2_listener5"/>
+<edge id="0" source="CN=G1_talker5" target="CN=G1_listener3"/>
+<edge id="0" source="CN=G1_talker5" target="CN=G1_listener2"/>
+<edge id="0" source="CN=G1_talker5" target="CN=G1_listener1"/>
 </graph></graphml>

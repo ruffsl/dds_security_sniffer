@@ -1,0 +1,10 @@
+fruit/bar/orange
+fruit/bar/test
+fruit/bar/test/alert
+fruit/bar/test/error
+fruit/bar/apple
+fruit/baz/banana
+fruit/baz/donut
+fruit/baz/kiwi
+fruit/baz/test/alert
+fruit/baz/test/error
