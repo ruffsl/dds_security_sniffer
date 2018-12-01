@@ -1,18 +1,9 @@
-FROM ocaml/opam2:ubuntu-18.04
-
-# install imandra
-RUN sudo apt-get update && sudo apt-get install -y \
-        iputils-ping \
-        wget \
-    && wget https://storage.googleapis.com/imandra-installer/install.sh -O install.sh \
-    && echo "/usr/local/bin\n" | sh install.sh -n \
-    && sudo rm -rf /var/lib/apt/lists/*
+FROM imandra/imandra-client-switch:ubuntu
 
 # install ocaml moduals
-RUN eval $(opam env --switch=/usr/local/var/imandra --set-switch) \
-    && opam install \
-        ISO8601 \
-        xml-light
+RUN opam install \
+      ISO8601 \
+      xml-light
 
 # install package managers
 RUN sudo apt-get update && sudo apt-get install -y \
@@ -27,6 +18,6 @@ RUN sudo pip3 install \
 
 COPY ./entrypoint.sh /
 ENTRYPOINT ["/entrypoint.sh"]
-CMD ["imandra-repl"]
+CMD ["imandra-repl", "--skip-update", "--skip-network-check"]
 
 # docker run -it --rm -v ${HOME}/.imandra:/home/opam/.imandra -p 8000:8000 this_image
