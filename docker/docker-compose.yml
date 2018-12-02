@@ -1,0 +1,43 @@
+version: '3'
+
+services:
+  # imandra-server:
+  #   build: ./imandra-server
+  #   ports:
+  #     - "8080:8000"
+  #     - "3000:3000"
+  #   environment:
+  #     - "IMANDIRA_DIR=/opt/verification"
+  #   volumes:
+  #     - permissions:/tmp/permissions
+  #     - ../verification:/opt/verification
+  #     - ${HOME}/.imandra:/home/opam/.imandra
+  #   entrypoint: imandra-http-server
+
+  # recon-client:
+  #   build: ./recon-client
+  #   environment:
+  #     - "IMANDIRA_DIR=/opt/verification"
+  #   volumes:
+  #     - permissions:/tmp/permissions
+  #     - ../tests/data:/tmp/data
+  #   entrypoint: imandra-http-server
+  #   command: ./recon-client.py --duration 10 --target
+  #   # command: sleep infinity
+
+  simulator:
+    build: ./simulator
+    environment:
+      - "ROS_DOMAIN_ID=0"
+      - "ROS_SECURITY_ROOT_DIRECTORY=/tmp/credentials"
+      - "ROS_SECURITY_ENABLE=true"
+      - "ROS_SECURITY_STRATEGY=Enforce"
+    volumes:
+      - ./simulator:/opt/simulator
+      - ../tests/credentials:/tmp/credentials
+      - /var/run/docker.sock:/var/run/docker.sock
+    # network_mode: "host"
+    privileged: true
+    working_dir: /opt/simulator
+    command: ./simulator.py --dir /tmp/credentials --ttl 3 --recon 10
+    # command: sleep infinity
