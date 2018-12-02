@@ -40,43 +40,44 @@ def main(argv=sys.argv[1:]):
     time.sleep(1)
 
     participant_containers = []
-    for i in dir.glob('**/*'):
-        node_ns = i.relative_to(dir)
-        participant_command = './participant.py ' + \
-            ' '.join(argv) + \
-            ' __ns:=' + '/' + str(node_ns.parent).rstrip('.') + \
-            ' __node:=' + str(node_ns.name)
-        print('command: ', participant_command)
-        participant_name = local_container.attrs['Name'].lstrip('/') + \
-            str(node_ns).replace('/', '.')
-        participant_container = docker_client.containers.run(
-            image=local_config['Image'],
-            command=participant_command,
-            environment=local_config['Env'],
-            name=participant_name,
-            network=local_network,
-            remove=True,
-            tty=False,
-            detach=True,
-            volumes=local_volumes,
-            working_dir=local_config['WorkingDir'])
-        participant_containers.append(participant_container)
+    for root, dirs, files in os.walk(str(dir)):
+        for i in dirs:
+            node_ns = Path(root, i).relative_to(dir)
+            participant_command = './participant.py ' + \
+                ' '.join(argv) + \
+                ' __ns:=' + '/' + str(node_ns.parent).rstrip('.') + \
+                ' __node:=' + str(node_ns.name)
+            print('command: ', participant_command)
+            participant_name = local_container.attrs['Name'].lstrip('/') + \
+                str(node_ns).replace('/', '.')
+            participant_container = docker_client.containers.run(
+                image=local_config['Image'],
+                command=participant_command,
+                environment=local_config['Env'],
+                name=participant_name,
+                network=local_network,
+                remove=True,
+                tty=False,
+                detach=True,
+                volumes=local_volumes,
+                working_dir=local_config['WorkingDir'])
+            participant_containers.append(participant_container)
 
-    def signal_handler(sig, frame):
-        for participant_container in participant_containers:
-            tshark_child.terminate()
-            shutil.copyfile(tshark_outfile, str(dir.joinpath(tshark_outfile.name)))
-            print('Killing: {}'.format(
-                participant_container.attrs['Name']))
-            participant_container.kill()
+        def signal_handler(sig, frame):
+            for participant_container in participant_containers:
+                # tshark_child.terminate()
+                # shutil.copyfile(tshark_outfile, str(dir.joinpath(tshark_outfile.name)))
+                print('Killing: {}'.format(
+                    participant_container.attrs['Name']))
+                participant_container.kill()
 
-    signal.signal(signal.SIGINT, signal_handler)
-    signal.signal(signal.SIGTERM, signal_handler)
-    signal.signal(signal.SIGALRM, signal_handler)
-    print('Press Ctrl+C')
-    signal.alarm(args.recon)
-    signal.pause()
-    sys.exit(0)
+        signal.signal(signal.SIGINT, signal_handler)
+        signal.signal(signal.SIGTERM, signal_handler)
+        signal.signal(signal.SIGALRM, signal_handler)
+        print('Press Ctrl+C')
+        signal.alarm(args.recon)
+        signal.pause()
+        sys.exit(0)
 
 
 if __name__ == "__main__":
