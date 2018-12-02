@@ -23,7 +23,9 @@ def main(argv=sys.argv[1:]):
     dir = Path(args.dir)
     docker_client = docker.from_env()
 
-    local_container_id = os.environ['HOSTNAME']
+    local_container_id = subprocess.check_output(
+        'head -1 /proc/self/cgroup | cut -d/ -f3',
+        shell=True).decode('utf8')[:12]
     local_container = docker_client.containers.get(local_container_id)
     local_config = local_container.attrs['Config']
     local_networks = local_container.attrs['NetworkSettings']['Networks']
