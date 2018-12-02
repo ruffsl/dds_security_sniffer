@@ -1,8 +1,14 @@
 #!/usr/bin/env python3
 import argparse
+import datetime
 import os
+import pwd
+import shlex
+import shutil
 import signal
+import subprocess
 import sys
+import time
 from pathlib import Path
 
 
@@ -12,7 +18,9 @@ import docker
 def main(argv=sys.argv[1:]):
     parser = argparse.ArgumentParser()
     parser.add_argument('--dir', required=True)
+    parser.add_argument('--recon', required=True, type=int)
     args, argv = parser.parse_known_args(argv)
+    dir = Path(args.dir)
     docker_client = docker.from_env()
 
     local_container_id = os.environ['HOSTNAME']
@@ -22,10 +30,18 @@ def main(argv=sys.argv[1:]):
     local_network = list(local_networks.values())[0]['NetworkID']
     local_volumes = local_container.attrs['HostConfig']['Binds']
 
-    p = Path(args.dir)
+    # tshark_interface = 'br-' + local_network[:12]
+    tshark_outfile = Path('/root').joinpath(datetime.datetime.utcnow().isoformat() + '.pcapng')
+    tshark_command = 'tshark -a duration:{duration} -i {interface} -w {outfile} -F pcapng'.format(
+        duration=args.recon,
+        interface='eth0',
+        outfile=str(tshark_outfile))
+    tshark_child = subprocess.Popen(shlex.split(tshark_command))
+    time.sleep(1)
+
     participant_containers = []
-    for i in p.glob('**/*'):
-        node_ns = i.relative_to(p)
+    for i in dir.glob('**/*'):
+        node_ns = i.relative_to(dir)
         participant_command = './participant.py ' + \
             ' '.join(argv) + \
             ' __ns:=' + '/' + str(node_ns.parent).rstrip('.') + \
@@ -48,13 +64,17 @@ def main(argv=sys.argv[1:]):
 
     def signal_handler(sig, frame):
         for participant_container in participant_containers:
+            tshark_child.terminate()
+            shutil.copyfile(tshark_outfile, str(dir.joinpath(tshark_outfile.name)))
             print('Killing: {}'.format(
                 participant_container.attrs['Name']))
             participant_container.kill()
 
-    signal.signal(signal.SIGTERM, signal_handler)
     signal.signal(signal.SIGINT, signal_handler)
+    signal.signal(signal.SIGTERM, signal_handler)
+    signal.signal(signal.SIGALRM, signal_handler)
     print('Press Ctrl+C')
+    signal.alarm(args.recon)
     signal.pause()
     sys.exit(0)
 
