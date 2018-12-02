@@ -33,13 +33,14 @@ def main(argv=sys.argv[1:]):
     local_volumes = local_container.attrs['HostConfig']['Binds']
 
     # tshark_interface = 'br-' + local_network[:12]
-    tshark_outfile = Path('/root').joinpath(datetime.datetime.utcnow().isoformat() + '.pcapng')
-    tshark_command = 'tshark -a duration:{duration} -i {interface} -w {outfile} -F pcapng'.format(
-        duration=args.recon,
-        interface='eth0',
-        outfile=str(tshark_outfile))
-    tshark_child = subprocess.Popen(shlex.split(tshark_command))
-    time.sleep(1)
+    # tshark_interface = 'br-' + '3a7606234e45'
+    # tshark_outfile = Path('/root').joinpath(datetime.datetime.utcnow().isoformat() + '.pcapng')
+    # tshark_command = 'tshark -a duration:{duration} -i {interface} -w {outfile} -F pcapng'.format(
+    #     duration=args.recon,
+    #     interface=tshark_interface,
+    #     outfile=str(tshark_outfile))
+    # tshark_child = subprocess.Popen(shlex.split(tshark_command))
+    # time.sleep(5)
 
     participant_containers = []
     for root, dirs, files in os.walk(str(dir)):
