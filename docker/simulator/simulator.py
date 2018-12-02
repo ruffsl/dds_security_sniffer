@@ -32,7 +32,7 @@ def main(argv=sys.argv[1:]):
             ' __node:=' + str(node_ns.name)
         print('command: ', participant_command)
         participant_name = local_container.attrs['Name'].lstrip('/') + \
-            str(i).replace('/', '_')
+            str(node_ns).replace('/', '.')
         participant_container = docker_client.containers.run(
             image=local_config['Image'],
             command=participant_command,
@@ -43,9 +43,7 @@ def main(argv=sys.argv[1:]):
             tty=False,
             detach=True,
             volumes=local_volumes,
-            working_dir=local_config['WorkingDir'],
-        )
-        print(participant_container)
+            working_dir=local_config['WorkingDir'])
         participant_containers.append(participant_container)
 
     def signal_handler(sig, frame):
