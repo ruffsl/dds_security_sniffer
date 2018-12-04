@@ -5,24 +5,26 @@ services:
     build: ./imandra-server
     ports:
       - "8080:8000"
-      - "3000:3000"
+      # - "3000:3000"
     volumes:
       - ../tests/data:/tmp/data
       - ../verification:/opt/verification
       - ${HOME}/.imandra:/home/opam/.imandra
     working_dir: /opt/verification
-    # entrypoint:  /usr/local/bin/imandra-http-server --skip-update
-    # command: --skip-update --skip-network-check
-    entrypoint: sleep infinity
+    entrypoint:  /usr/local/bin/imandra-http-server
+    command: --skip-update
+    # entrypoint: sleep infinity
 
-  # recon:
-  #   build: ./recon
-  #   environment:
-  #     - "IMANDIRA_URL=http://imandra-server:3000"
-  #   volumes:
-  #     - ../tests/data:/tmp/data
-  #   command: ./recon.py --dir /tmp/data --target "CN=a_1"
-  #   # command: sleep infinity
+  recon:
+    build: ./recon
+    environment:
+      - "IMANDIRA_URL=http://imandra-server:3000"
+    volumes:
+      - ./recon:/opt/recon
+      - ../tests/data:/tmp/data
+    working_dir: /opt/recon
+    command: ./recon.py --dir /tmp/data --target "CN=a_1"
+    # command: sleep infinity
 
   simulator:
     build: ./simulator

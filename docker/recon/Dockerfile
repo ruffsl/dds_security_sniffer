@@ -9,4 +9,5 @@ RUN apt-get update && apt-get install -y \
 RUN pip3 install \
         jupyter \
         networkx \
-        pexpect
+        pexpect \
+        requests
