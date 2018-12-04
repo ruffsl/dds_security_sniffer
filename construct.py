@@ -5,6 +5,7 @@ import networkx as nx
 import xml.etree.ElementTree as ET
 import itertools
 from greenery.lego import parse
+from matplotlib import pyplot as plt
 
 def getAllXMLFiles(path):
     files = []
@@ -65,14 +66,22 @@ def construct(G, metadata):
             for p in metadata[m]['allow_sub']:
                 pubRegx = perm.replace("*", ".*")
                 subRegx = p.replace("*", ".*")
+                print(pubRegx, subRegx)
                 intersect = str(parse(pubRegx) & parse(subRegx))
                 if intersect != "[]":
+                    print('intersect', intersect)
                     G.add_edge(n, m, regex=intersect)
 
 def plot_graph_figure(G, file_name, view='pdf'):
     A = nx.nx_agraph.to_agraph(G)
     A.add_subgraph()
     if view == 'pdf':
+        nx.draw(G, nx.spring_layout(G))
+        edge_labels = nx.get_edge_attributes(G, 'regex')
+        nx.draw_networkx_edge_labels(G, nx.spring_layout(G), labels=edge_labels)
+    
+        plt.show()
+
         A.draw(file_name + '.' + 'pdf', prog='dot')
         display(IFrame(file_name + '.' + view, width=950, height=300))
     elif view == 'png':
