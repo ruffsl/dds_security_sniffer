@@ -1,3 +1,4 @@
+from IPython.display import display, IFrame, Image, Markdown, SVG
 import os
 import sys
 import networkx as nx
@@ -64,6 +65,22 @@ def construct(G, metadata):
                 if p == perm:
                     G.add_edge(n, m)
 
+def plot_graph_figure(G, file_name, view='pdf'):
+    A = nx.nx_agraph.to_agraph(G)
+    A.add_subgraph()
+    if view == 'pdf':
+        A.draw(file_name + '.' + 'pdf', prog='dot')
+        display(IFrame(file_name + '.' + view, width=950, height=300))
+    elif view == 'png':
+        A.draw(file_name + '.' + 'png', prog='dot')
+        A.draw(file_name + '.' + 'pdf', prog='dot')
+        display(Image(file_name + '.' + view))
+    elif view == 'svg':
+        A.draw(file_name + '.' + 'svg', prog='dot')
+        display(SVG(file_name + '.' + view))
+    else:
+        raise ValueError("No view option: {}".format(view))
+
 if __name__ == '__main__':
     path = sys.argv[1]
     files = getAllXMLFiles(path)
@@ -74,3 +91,4 @@ if __name__ == '__main__':
     addNode(G, metadata)
     construct(G, metadata)
     nx.write_graphml(G, 'g.xml')
+    plot_graph_figure(G, 'G')
