@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='utf-8'?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd"><key attr.name="default" attr.type="string" for="node" id="d6"/>
+<key attr.name="not_after" attr.type="string" for="node" id="d5"/>
+<key attr.name="not_before" attr.type="string" for="node" id="d4"/>
+<key attr.name="deny_pub" attr.type="string" for="node" id="d3"/>
+<key attr.name="deny_sub" attr.type="string" for="node" id="d2"/>
+<key attr.name="allow_pub" attr.type="string" for="node" id="d1"/>
+<key attr.name="allow_sub" attr.type="string" for="node" id="d0"/>
+<graph edgedefault="directed"><node id="CN=talker">
+  <data key="d0">['rt/clock', 'rt/parameter_events', 'rr/talker/describe_parametersReply', 'rr/talker/get_parameter_typesReply', 'rr/talker/get_parametersReply', 'rr/talker/list_parametersReply', 'rr/talker/set_parametersReply', 'rr/talker/set_parameters_atomicallyReply', 'rq/talker/describe_parametersRequest', 'rq/talker/get_parameter_typesRequest', 'rq/talker/get_parametersRequest', 'rq/talker/list_parametersRequest', 'rq/talker/set_parametersRequest', 'rq/talker/set_parameters_atomicallyRequest']</data>
+  <data key="d1">['rt/parameter_events', 'rt/chatter', 'rq/talker/describe_parametersRequest', 'rq/talker/get_parameter_typesRequest', 'rq/talker/get_parametersRequest', 'rq/talker/list_parametersRequest', 'rq/talker/set_parametersRequest', 'rq/talker/set_parameters_atomicallyRequest', 'rr/talker/describe_parametersReply', 'rr/talker/get_parameter_typesReply', 'rr/talker/get_parametersReply', 'rr/talker/list_parametersReply', 'rr/talker/set_parametersReply', 'rr/talker/set_parameters_atomicallyReply']</data>
+  <data key="d2">[]</data>
+  <data key="d3">[]</data>
+  <data key="d4">2013-10-26T00:00:00</data>
+  <data key="d5">2023-10-26T22:45:30</data>
+  <data key="d6">DENY</data>
+</node>
+<node id="CN=listener">
+  <data key="d0">['rt/clock', 'rt/parameter_events', 'rt/chatter', 'rr/listener/describe_parametersReply', 'rr/listener/get_parameter_typesReply', 'rr/listener/get_parametersReply', 'rr/listener/list_parametersReply', 'rr/listener/set_parametersReply', 'rr/listener/set_parameters_atomicallyReply', 'rq/listener/describe_parametersRequest', 'rq/listener/get_parameter_typesRequest', 'rq/listener/get_parametersRequest', 'rq/listener/list_parametersRequest', 'rq/listener/set_parametersRequest', 'rq/listener/set_parameters_atomicallyRequest']</data>
+  <data key="d1">['rt/parameter_events', 'rq/listener/describe_parametersRequest', 'rq/listener/get_parameter_typesRequest', 'rq/listener/get_parametersRequest', 'rq/listener/list_parametersRequest', 'rq/listener/set_parametersRequest', 'rq/listener/set_parameters_atomicallyRequest', 'rr/listener/describe_parametersReply', 'rr/listener/get_parameter_typesReply', 'rr/listener/get_parametersReply', 'rr/listener/list_parametersReply', 'rr/listener/set_parametersReply', 'rr/listener/set_parameters_atomicallyReply']</data>
+  <data key="d2">[]</data>
+  <data key="d3">[]</data>
+  <data key="d4">2013-10-26T00:00:00</data>
+  <data key="d5">2023-10-26T22:45:30</data>
+  <data key="d6">DENY</data>
+</node>
+<edge id="0" source="CN=talker" target="CN=listener"/>
+<edge id="1" source="CN=talker" target="CN=listener"/>
+<edge id="0" source="CN=listener" target="CN=talker"/>
+</graph></graphml>
