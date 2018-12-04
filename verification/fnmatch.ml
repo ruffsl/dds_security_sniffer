@@ -1,3 +1,5 @@
+#logic
+
 let fnmatch (matchPattern:string) (matchString:string) : bool =
     if String.suffix "*" matchPattern then
         let index = (String.length matchPattern) - 1 in

@@ -1,3 +1,7 @@
+#use "parser.ml"
+#use "fnmatch.ml"
+#logic
+
 let rec inList l target =
     match l with
     | [] -> false

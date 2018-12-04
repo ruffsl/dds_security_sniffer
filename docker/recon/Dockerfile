@@ -10,6 +10,3 @@ RUN pip3 install \
         jupyter \
         networkx \
         pexpect
-
-COPY ./entrypoint.sh /
-ENTRYPOINT ["/entrypoint.sh"]

@@ -28,19 +28,21 @@ def main(argv=sys.argv[1:]):
         shell=True).decode('utf8')[:12]
     local_container = docker_client.containers.get(local_container_id)
     local_config = local_container.attrs['Config']
-    local_networks = local_container.attrs['NetworkSettings']['Networks']
-    local_network = list(local_networks.values())[0]['NetworkID']
-    local_volumes = local_container.attrs['HostConfig']['Binds']
+    # local_networks = local_container.attrs['NetworkSettings']['Networks']
+    # local_network = list(local_networks.values())[0]['NetworkID']
+    participant_volumes = local_container.attrs['HostConfig']['Binds']
+    participant_network = docker_client.networks.list(os.environ['PARTICIPANT_NETWORK'])[0]
 
-    # tshark_interface = 'br-' + local_network[:12]
+    tshark_interface = 'br-' + participant_network
     # tshark_interface = 'br-' + '3a7606234e45'
-    # tshark_outfile = Path('/root').joinpath(datetime.datetime.utcnow().isoformat() + '.pcapng')
-    # tshark_command = 'tshark -a duration:{duration} -i {interface} -w {outfile} -F pcapng'.format(
-    #     duration=args.recon,
-    #     interface=tshark_interface,
-    #     outfile=str(tshark_outfile))
-    # tshark_child = subprocess.Popen(shlex.split(tshark_command))
-    # time.sleep(5)
+    # tshark_interface = 'eth0'
+    tshark_outfile = Path('/root').joinpath(datetime.datetime.utcnow().isoformat() + '.pcapng')
+    tshark_command = 'tshark -a duration:{duration} -i {interface} -w {outfile} -F pcapng'.format(
+        duration=args.recon,
+        interface=tshark_interface,
+        outfile=str(tshark_outfile))
+    tshark_child = subprocess.Popen(shlex.split(tshark_command))
+    time.sleep(5)
 
     participant_containers = []
     for root, dirs, files in os.walk(str(dir)):
@@ -58,11 +60,11 @@ def main(argv=sys.argv[1:]):
                 command=participant_command,
                 environment=local_config['Env'],
                 name=participant_name,
-                network=local_network,
+                network=participant_network,
                 remove=True,
                 tty=False,
                 detach=True,
-                volumes=local_volumes,
+                volumes=participant_volumes,
                 working_dir=local_config['WorkingDir'])
             participant_containers.append(participant_container)
 
