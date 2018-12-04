@@ -4,6 +4,7 @@ import sys
 import networkx as nx
 import xml.etree.ElementTree as ET
 import itertools
+from greenery.lego import parse
 
 def getAllXMLFiles(path):
     files = []
@@ -62,8 +63,11 @@ def construct(G, metadata):
     for n, m in itertools.permutations(G.nodes, 2):
         for perm in metadata[n]['allow_pub']:
             for p in metadata[m]['allow_sub']:
-                if p == perm:
-                    G.add_edge(n, m)
+                pubRegx = perm.replace("*", ".*")
+                subRegx = p.replace("*", ".*")
+                intersect = str(parse(pubRegx) & parse(subRegx))
+                if intersect != "[]":
+                    G.add_edge(n, m, regex=intersect)
 
 def plot_graph_figure(G, file_name, view='pdf'):
     A = nx.nx_agraph.to_agraph(G)
