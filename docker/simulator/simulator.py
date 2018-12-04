@@ -33,7 +33,7 @@ def main(argv=sys.argv[1:]):
     participant_volumes = local_container.attrs['HostConfig']['Binds']
     participant_network = docker_client.networks.list(os.environ['PARTICIPANT_NETWORK'])[0]
 
-    tshark_interface = 'br-' + participant_network
+    tshark_interface = 'br-' + participant_network.id[:12]
     # tshark_interface = 'br-' + '3a7606234e45'
     # tshark_interface = 'eth0'
     tshark_outfile = Path('/root').joinpath(datetime.datetime.utcnow().isoformat() + '.pcapng')
@@ -60,7 +60,7 @@ def main(argv=sys.argv[1:]):
                 command=participant_command,
                 environment=local_config['Env'],
                 name=participant_name,
-                network=participant_network,
+                network=participant_network.name,
                 remove=True,
                 tty=False,
                 detach=True,
@@ -70,8 +70,8 @@ def main(argv=sys.argv[1:]):
 
         def signal_handler(sig, frame):
             for participant_container in participant_containers:
-                # tshark_child.terminate()
-                # shutil.copyfile(tshark_outfile, str(dir.joinpath(tshark_outfile.name)))
+                tshark_child.terminate()
+                shutil.copyfile(tshark_outfile, str(dir.joinpath(tshark_outfile.name)))
                 print('Killing: {}'.format(
                     participant_container.attrs['Name']))
                 participant_container.kill()

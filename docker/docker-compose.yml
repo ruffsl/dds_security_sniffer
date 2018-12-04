@@ -24,21 +24,21 @@ services:
   #   command: ./recon.py --dir /tmp/data --target "CN=a_1"
   #   # command: sleep infinity
 
-  # simulator:
-  #   build: ./simulator
-  #   environment:
-  #     - "ROS_DOMAIN_ID=0"
-  #     - "ROS_SECURITY_ROOT_DIRECTORY=/tmp/credentials"
-  #     - "ROS_SECURITY_ENABLE=true"
-  #     - "ROS_SECURITY_STRATEGY=Enforce"
-  #     - "PARTICIPANT_NETWORK=docker_default"
-  #   volumes:
-  #     - ./simulator:/opt/simulator
-  #     - ../tests/credentials:/tmp/credentials
-  #     - ../tests/data:/tmp/data
-  #     - /var/run/docker.sock:/var/run/docker.sock
-  #   # network_mode: "host"
-  #   privileged: true
-  #   working_dir: /opt/simulator
-  #   command: ./simulator.py --dir /tmp/credentials --ttl 3 --recon 10 --out /tmp/data
-  #   # command: sleep infinity
+  simulator:
+    build: ./simulator
+    environment:
+      - "ROS_DOMAIN_ID=0"
+      - "ROS_SECURITY_ROOT_DIRECTORY=/tmp/credentials"
+      - "ROS_SECURITY_ENABLE=true"
+      - "ROS_SECURITY_STRATEGY=Enforce"
+      - "PARTICIPANT_NETWORK=docker_default"
+    volumes:
+      - ./simulator:/opt/simulator
+      - ../tests/credentials:/tmp/credentials
+      - ../tests/data:/tmp/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    network_mode: "host"
+    privileged: true
+    working_dir: /opt/simulator
+    command: ./simulator.py --dir /tmp/credentials --ttl 3 --recon 10
+    # command: sleep infinity
