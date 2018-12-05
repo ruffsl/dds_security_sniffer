@@ -143,20 +143,26 @@ def plot_graph_figure(G, file_name, view='pdf'):
     else:
         raise ValueError("No view option: {}".format(view))
 
-if __name__ == '__main__':
-    path = sys.argv[1]
+def graph_construct(path):
     files = get_all_xml_files(path)
     G = nx.MultiDiGraph()
     topics, perm_map = set(), dict()
     for f in files:
         parse_xml(f, G, topics, perm_map)
-    plot_graph_figure(G, 'G')
+    plot_graph_figure(G, os.path.join(path, 'G'))
     ds = connect_topic_nodes(G, topics)
-    plot_graph_figure(G, 'connectedG')
+    plot_graph_figure(G, os.path.join(path, 'connectedG'))
     G = contract_nodes(G, topics, ds)
-    plot_graph_figure(G, 'contractedG')
+    plot_graph_figure(G, os.path.join(path, 'contractedG'))
     G = remove_topics(G)
-    plot_graph_figure(G, 'cleanedG')
-    nx.write_graphml_lxml(G, 'serializedG.graphml')
-    with open('data.pickle', 'wb') as f:
+    plot_graph_figure(G, os.path.join(path, 'cleanedG'))
+    nx.write_graphml_lxml(G, os.path.join(path, 'serializedG.graphml'))
+    with open(os.path.join(path, 'data.pickle'), 'wb') as f:
         pickle.dump(perm_map, f)
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--path', required=True)
+    args, argv = parser.parse_known_args(argv)
+    graph_construct(path=args.path)
