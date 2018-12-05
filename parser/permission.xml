@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<dds xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://community.rti.com/schema/5.3.1/dds_security_permissions.xsd">
+    <permissions>
+           <grant name="AllowAll">
+            <subject_name>/C=US/ST=CA/O=Real Time Innovations/CN=dtlsexampleECdsa/emailAddress=meECdsa@rti.com</subject_name>
+            <validity>
+                <not_before>2013-06-01T13:00:00</not_before>
+                <not_after>2033-06-01T13:00:00</not_after>
+            </validity>
+            <default>ALLOW</default>
+        </grant> 
+        <grant name="SecureDenyPubCircles">
+            <subject_name>/C=US/ST=CA/O=Real Time Innovations/CN=dtlsexample2ECdsa/emailAddress=youECdsa@rti.com</subject_name>
+            <validity>
+                <!-- Format is CCYY-MM-DDThh:mm:ss[Z|(+|-)hh:mm] in GMT -->
+                <not_before>2013-06-01T13:00:00</not_before>
+                <not_after>2033-06-01T13:00:00</not_after>
+            </validity>
+            <deny_rule>
+                <domains>
+                    <id>0</id>
+                </domains>
+                <publish>
+                    <topics>
+                        <topic>Circle*</topic>
+                    </topics>
+                </publish>
+            </deny_rule>
+            <default>ALLOW</default>
+        </grant>
+        <grant name="SecureDenySubSquares">
+            <subject_name>/C=US/ST=CA/O=Real Time Innovations/CN=dtlsexample3ECdsa/emailAddress=youECdsa@rti.com</subject_name>
+            <validity>
+                <!-- Format is CCYY-MM-DDThh:mm:ss[Z|(+|-)hh:mm] in GMT -->
+                <not_before>2013-06-01T13:00:00</not_before>
+                <not_after>2033-06-01T13:00:00</not_after>
+            </validity>
+            <deny_rule>
+                <domains>
+                    <id>0</id>
+                </domains>
+                <subscribe>
+                    <topics>
+                        <topic>Square*</topic>
+                    </topics>
+                </subscribe>
+            </deny_rule>
+            <default>ALLOW</default>
+        </grant>
+    </permissions>
+</dds>
