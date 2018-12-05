@@ -11,8 +11,8 @@ services:
       - ../verification:/opt/verification
       - ${HOME}/.imandra:/home/opam/.imandra
     working_dir: /opt/verification
-    entrypoint:  /usr/local/bin/imandra-http-server
-    #command: --skip-update
+    entrypoint:  ["imandra-http-server"]
+    command: ["--skip-update", "--skip-network"]
     # entrypoint: sleep infinity
 
   recon:
