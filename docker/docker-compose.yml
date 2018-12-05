@@ -23,7 +23,7 @@ services:
       - ./recon:/opt/recon
       - ../tests/data:/tmp/data
     working_dir: /opt/recon
-    command: ./recon.py --dir /tmp/data --target "CN=a_1"
+    command: ./recon.py --path /tmp/data/2018-12-05T02:00:03.487296.pcapng --dir /tmp/data --source "CN=a_1" --target "CN=b_1"
     # command: sleep infinity
 
   simulator:
@@ -39,11 +39,8 @@ services:
       - ../tests/credentials:/tmp/credentials
       - ../tests/data:/tmp/data
       - /var/run/docker.sock:/var/run/docker.sock
-      - ../sniff/:/opt/sniff
     network_mode: "host"
     privileged: true
     working_dir: /opt/simulator
-    command: ./simulator.py --dir /tmp/credentials --ttl 3 --recon 10
-    command: /opt/sniff/run.sh 
-    command: sleep infinity
-
+    command: ./simulator.py --dir /tmp/credentials --path /tmp/data --ttl 3 --recon 10
+    # command: sleep infinity
