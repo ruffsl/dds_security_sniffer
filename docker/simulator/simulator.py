@@ -18,9 +18,11 @@ import docker
 def main(argv=sys.argv[1:]):
     parser = argparse.ArgumentParser()
     parser.add_argument('--dir', required=True)
+    parser.add_argument('--path', required=True)
     parser.add_argument('--recon', required=True, type=int)
     args, argv = parser.parse_known_args(argv)
     dir = Path(args.dir)
+    path = Path(args.path)
     docker_client = docker.from_env()
 
     local_container_id = subprocess.check_output(
@@ -71,7 +73,7 @@ def main(argv=sys.argv[1:]):
         def signal_handler(sig, frame):
             for participant_container in participant_containers:
                 tshark_child.terminate()
-                shutil.copyfile(tshark_outfile, str(dir.joinpath(tshark_outfile.name)))
+                shutil.copyfile(tshark_outfile, str(path.joinpath(tshark_outfile.name)))
                 print('Killing: {}'.format(
                     participant_container.attrs['Name']))
                 participant_container.kill()
