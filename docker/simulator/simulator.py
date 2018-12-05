@@ -2,7 +2,6 @@
 import argparse
 import datetime
 import os
-import pwd
 import shlex
 import shutil
 import signal
@@ -11,18 +10,16 @@ import sys
 import time
 from pathlib import Path
 
-
 import docker
 
 
 def main(argv=sys.argv[1:]):
     parser = argparse.ArgumentParser()
-    parser.add_argument('--dir', required=True)
-    parser.add_argument('--path', required=True)
+    parser.add_argument('--data_dir', required=True)
     parser.add_argument('--recon', required=True, type=int)
     args, argv = parser.parse_known_args(argv)
-    dir = Path(args.dir)
-    path = Path(args.path)
+    credentials_dir = Path(os.environ['ROS_SECURITY_ROOT_DIRECTORY'])
+    data_dir = Path(args.data_dir)
     docker_client = docker.from_env()
 
     local_container_id = subprocess.check_output(
@@ -47,9 +44,9 @@ def main(argv=sys.argv[1:]):
     time.sleep(5)
 
     participant_containers = []
-    for root, dirs, files in os.walk(str(dir)):
+    for root, dirs, files in os.walk(str(credentials_dir)):
         for i in dirs:
-            node_ns = Path(root, i).relative_to(dir)
+            node_ns = Path(root, i).relative_to(credentials_dir)
             participant_command = './participant.py ' + \
                 ' '.join(argv) + \
                 ' __ns:=' + '/' + str(node_ns.parent).rstrip('.') + \
@@ -67,13 +64,21 @@ def main(argv=sys.argv[1:]):
                 tty=False,
                 detach=True,
                 volumes=participant_volumes,
-                working_dir=local_config['WorkingDir'])
+                working_dir=local_config['WorkingDir'],
+                labels={'simulation': 'participant'})
             participant_containers.append(participant_container)
 
         def signal_handler(sig, frame):
+            tshark_child.terminate()
+            trial_data_dir = data_dir.joinpath(tshark_outfile.stem)
+            trial_data_file = trial_data_dir.joinpath(tshark_outfile.name)
+            trial_data_dir.mkdir()
+            shutil.copyfile(tshark_outfile, trial_data_file)
+            data_dir_uid = os.stat(data_dir).st_uid
+            data_dir_gid = os.stat(data_dir).st_gid
+            os.chown(trial_data_dir, data_dir_uid, data_dir_gid)
+            os.chown(trial_data_file, data_dir_uid, data_dir_gid)
             for participant_container in participant_containers:
-                tshark_child.terminate()
-                shutil.copyfile(tshark_outfile, str(path.joinpath(tshark_outfile.name)))
                 print('Killing: {}'.format(
                     participant_container.attrs['Name']))
                 participant_container.kill()
