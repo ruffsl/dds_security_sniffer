@@ -3,41 +3,13 @@ import argparse
 import os
 import sys
 
-from imandra_client import ImandraClient
-from imandra_client import base64_str_to_str
+from construct import graph_construct
+from extract import extract
 
+from query import check_route
 
-class ReconAgent(ImandraClient):
-    def __init__(self, base_url):
-        super().__init__(base_url)
-        self._config()
+from recon_agent import ReconAgent
 
-    def _config(self):
-        super()._init()
-        self._eval(data='#redef true')
-        self._eval(data='#use "reachability.ml"')
-        self._eval(data='Genpp.eval()')
-        self._eval(data='''
-let reflect_permission_into_logic name value = Pconfig.(with_mode_assigned ~to_:State.Logic
-   Imandra.eval_string (Printf.sprintf "let %s = %s" name @@ Pp.pp_permissions value)) [@@program] 
-''')
-
-    def instance_reachabile(self, perms_x, perms_y, as_bool=True):
-        self._eval(
-            data='let perms_x = parse_permission_file "{}" [@@program]'.format(perms_x))
-        self._eval(
-            data='let perms_y = parse_permission_file "{}" [@@program]'.format(perms_y))
-        self._eval(
-            data='reflect_permission_into_logic "perms_x" perms_x [@@program]')
-        self._eval(
-            data='reflect_permission_into_logic "perms_y" perms_y [@@program]')
-        return self._instance(
-            data='fun x y -> reachable x perms_x y perms_y',
-            data_type='src',
-            as_bool=as_bool)
-    
-    
-        
 
 def main(argv=sys.argv[1:]):
     # parser = argparse.ArgumentParser()
