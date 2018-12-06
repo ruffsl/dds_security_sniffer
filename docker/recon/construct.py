@@ -69,11 +69,11 @@ def parse_xml(f, G, topics, perm_map):
             G.node[subject]['not_after'] = validity.findtext("./not_after")
         allow_rules = grant.findall("./allow_rule")
         for ar in allow_rules:
-            parse_rules("sub", "./subscribe/topics/topic", G, ar)
-            parse_rules("pub", "./publish/topics/topic", G, ar)
-            parse_rules("rel", "./relay/topics/topic", G, ar)
+            parse_rules("sub", "./subscribe/topics/topic", G, ar, topics, subject)
+            parse_rules("pub", "./publish/topics/topic", G, ar, topics, subject)
+            parse_rules("rel", "./relay/topics/topic", G, ar, topics, subject)
 
-def parse_rules(ty, xpath, G, ar):
+def parse_rules(ty, xpath, G, ar, topics, subject):
     allows = ar.findall(xpath)
     for allow in allows:
         topic = allow.text
