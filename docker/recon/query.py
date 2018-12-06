@@ -5,20 +5,22 @@ import argparse
 import pickle
 import networkx as nx
 
-# TODO: need modification. Given a single node in the graph, find all nodes that can be reached from the given node.
-def findTargets(G, topics, source):
-    length = dict(nx.single_source_shortest_path_length(G, source))
-    targets = length.keys() - topics
-    targets.remove(source)
-    return targets
-
-# TODO: need modification. Given a single node in the graph, find all nodes that can reach to it.
-def findSources(G, topics, target):
-    length = dict(nx.single_target_shortest_path_length(G, target))
-    sources = length.keys() - topics
-    sources.remove(target)
-    return sources
-
+# Given a single node in the graph, find all nodes that can be reached from the given node.
+def findTargets(G, source, perm_map, check_func):
+    res = set()
+    for nei in G.neighbors(source):
+        if check_func(perm_map[source], perm_map[nei]):
+            res.add(nei)
+    return res
+    
+# Given a single node in the graph, find all nodes that can reach to it.
+def findSources(G, target, perm_map, check_func):
+    res = set()
+    for nei in G.Predecessors(target):
+        if check_func(perm_map[nei], perm_map[target]):
+            res.add(nei)
+    return res
+    
 # Mock function that checks whether there is really a path or not. A, B are the path of permission files.
 def mockCheck(A, B):
     if random.choice([0, 1]):
@@ -47,7 +49,13 @@ def check_route(path, source, target, check_func):
         perm_map = pickle.load(f)
     if source and target:
         print("Path from {} to {}: {}".format(source, target, checkReachability(G, source, target, perm_map, check_func)))
+    elif source:
+        print("Nodes to take over from source {}: {}".format(source, findTargets(G, source, perm_map, check_func))
+    elif target:
+        print("Nodes to take over from target {}: {}".format(target, findSources(G, target, perm_map, check_func))
 
+def get_ip(subject):
+    return perm_map[subject]
 
 def main(argv=sys.argv[1:]):
     parser = argparse.ArgumentParser()
@@ -56,7 +64,6 @@ def main(argv=sys.argv[1:]):
     parser.add_argument('--path', required=True)
     args = parser.parse_args(argv)
     check_route(path=args.path, source=args.source, target=args.target, check_func=mockCheck)
-
 
 if __name__ == "__main__":
     main()

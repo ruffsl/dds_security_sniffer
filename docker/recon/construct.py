@@ -69,19 +69,25 @@ def parse_xml(f, G, topics, perm_map):
             G.node[subject]['not_after'] = validity.findtext("./not_after")
         allow_rules = grant.findall("./allow_rule")
         for ar in allow_rules:
-            allows = ar.findall("./subscribe/topics/topic")
-            for allow in allows:
-                topic = allow.text
-                if topic not in G:
-                    topics.add(topic)
-                    G.add_node(topic, color='green')
+            parse_rules("sub", "./subscribe/topics/topic", G, ar)
+            parse_rules("pub", "./publish/topics/topic", G, ar)
+            parse_rules("rel", "./relay/topics/topic", G, ar)
+
+def parse_rules(ty, xpath, G, ar):
+    allows = ar.findall(xpath)
+    for allow in allows:
+        topic = allow.text
+        if topic not in G:
+            topics.add(topic)
+            G.add_node(topic, color='green')
+        if ty == 'sub' and not G.has_edge(topic, subject):
+            G.add_edge(topic, subject)
+        elif ty == 'pub' and not G.has_edge(subject, topic):
+            G.add_edge(subject, topic)
+        elif ty == 'rel':
+            if not G.has_edge(topic, subject):
                 G.add_edge(topic, subject)
-            allowp = ar.findall("./publish/topics/topic")
-            for allow in allowp:
-                topic = allow.text
-                if topic not in G:
-                    topics.add(topic)
-                    G.add_node(topic, color='green')
+            if not G.has_edge(suject, topic):
                 G.add_edge(subject, topic)
 
 def connect_topic_nodes(G, topics):

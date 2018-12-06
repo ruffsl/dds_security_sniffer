@@ -16,9 +16,11 @@ from recon_agent import ReconAgent
 def main(argv=sys.argv[1:]):
     parser = argparse.ArgumentParser()
     parser.add_argument('--data_dir', required=True)
-    parser.add_argument('--target', required=True)
-    parser.add_argument('--source', required=True)
+    parser.add_argument('--target')
+    parser.add_argument('--source')
     args, argv = parser.parse_known_args(argv)
+    if not args.target and not args.source:
+        parser.error("Either source or target or both must be provided.")
     data_dir = Path(args.data_dir)
 
     recon_agent = ReconAgent(os.environ['IMANDIRA_URL'])
