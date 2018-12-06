@@ -2,6 +2,7 @@ from IPython.display import display, IFrame, Image, Markdown, SVG
 import os
 import sys
 import fnmatch
+import pickle
 import xml.etree.ElementTree as ET
 import itertools
 import networkx as nx
@@ -50,13 +51,17 @@ def get_all_xml_files(path):
 # 1. Default rule is DENY
 # 2. There is no deny_rule
 # 3. There is no expression
-def parse_xml(f, G, topics):
-    root = ET.parse(f).getroot()
+def parse_xml(f, G, topics, perm_map):
+    idx = f.rfind('_')
+    if idx != -1:
+        ip_addr = f[f.rfind('/')+1:idx]
+        root = ET.parse(f).getroot()
     grants = root.findall("./permissions/grant")
     for grant in grants:
         subject = grant.findtext("./subject_name")
         if subject not in G:
-            G.add_node(subject, color='red')
+            G.add_node(subject, color='red', ip=ip_addr)
+            perm_map[subject] = f
         validity = grant.find("./validity")
         if validity and validity.find("./not_before"):
             G.node[subject]['not_before'] = validity.findtext("./not_before")
@@ -142,9 +147,9 @@ if __name__ == '__main__':
     path = sys.argv[1]
     files = get_all_xml_files(path)
     G = nx.MultiDiGraph()
-    topics = set()
+    topics, perm_map = set(), dict()
     for f in files:
-        parse_xml(f, G, topics)
+        parse_xml(f, G, topics, perm_map)
     plot_graph_figure(G, 'G')
     ds = connect_topic_nodes(G, topics)
     plot_graph_figure(G, 'connectedG')
@@ -153,3 +158,5 @@ if __name__ == '__main__':
     G = remove_topics(G)
     plot_graph_figure(G, 'cleanedG')
     nx.write_graphml_lxml(G, 'serializedG.graphml')
+    with open('data.pickle', 'wb') as f:
+        pickle.dump(perm_map, f)
