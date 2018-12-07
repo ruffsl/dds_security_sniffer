@@ -26,6 +26,20 @@ services:
     command: ./recon.py --data_dir /tmp/data --source "CN=a_1" --target "CN=b_1"
     # command: sleep infinity
 
+  attacker:
+    build: ./attacker
+    environment:
+      - "PARTICIPANT_NETWORK=docker_default"
+    volumes:
+      - ./attacker:/opt/attacker
+      - /var/run/docker.sock:/var/run/docker.sock
+    network_mode: "host"
+    privileged: true
+    working_dir: /opt/attacker
+    command: ./capture.py /tmp 
+    # command: sleep infinity
+
+
   simulator:
     build: ./simulator
     environment:
