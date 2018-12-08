@@ -12,7 +12,7 @@ def findTargets(G, source, perm_map, check_func):
         for nei in G.neighbors(source):
             if check_func(perm_map[source], perm_map[nei]):
                 res.add(nei)
-        return res
+        return returnDict(res)
     except AttributeError:
         return res
 
@@ -23,7 +23,7 @@ def findSources(G, target, perm_map, check_func):
         for nei in G.Predecessors(target):
             if check_func(perm_map[nei], perm_map[target]):
                 res.add(nei)
-        return res
+        return returnDict(res)
     except AttributeError:
         return res
 
@@ -47,7 +47,13 @@ def checkReachability(G, src, dest, perm_map, check_func):
                 found = False
                 G.remove_edge(path[i], path[i+1])
         if found:
-            return path
+            return returnDict(path)
+
+def returnDict(l):
+    res = dict()
+    for n in l:
+        res[n] = get_ip(n)
+    return res
 
 def check_route(path, source, target, check_func):
     G = nx.read_graphml(os.path.join(path, 'serializedG.graphml'))
