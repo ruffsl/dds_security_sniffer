@@ -67,7 +67,8 @@ def check_route(path, source, target, check_func):
         print("Nodes to take over from target {}: {}".format(target, findSources(G, target, perm_map, check_func)))
 
 def get_ip(perm_map, subject):
-    return perm_map[subject]
+    ip_str = os.path.basename(perm_map[subject])
+    return ip_str.split('_')[0]
 
 def main(argv=sys.argv[1:]):
     parser = argparse.ArgumentParser()
