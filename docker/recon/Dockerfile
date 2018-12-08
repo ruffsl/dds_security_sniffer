@@ -20,6 +20,7 @@ RUN apt-get update -qq && apt-get install -qq -y \
 
 # install python dependencies
 RUN pip3 install \
+        docker \
         jupyter \
         networkx \
         M2Crypto \

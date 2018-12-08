@@ -70,7 +70,7 @@ def main(argv=sys.argv[1:]):
                 labels={'simulation': 'participant'})
             participant_containers.append(participant_container)
 
-        def signal_handler(sig, frame):
+        def stop_tshark_handler(sig, frame):
             tshark_child.terminate()
             trial_data_dir = data_dir.joinpath(tshark_outfile.stem)
             trial_data_file = trial_data_dir.joinpath(tshark_outfile.name)
@@ -80,14 +80,16 @@ def main(argv=sys.argv[1:]):
             data_dir_gid = os.stat(data_dir).st_gid
             os.chown(trial_data_dir, data_dir_uid, data_dir_gid)
             os.chown(trial_data_file, data_dir_uid, data_dir_gid)
+
+        def stop_simulation_handler(sig, frame):
             for participant_container in participant_containers:
                 print('Killing: {}'.format(
                     participant_container.attrs['Name']))
                 participant_container.kill()
 
-        signal.signal(signal.SIGINT, signal_handler)
-        signal.signal(signal.SIGTERM, signal_handler)
-        signal.signal(signal.SIGALRM, signal_handler)
+        signal.signal(signal.SIGINT, stop_simulation_handler)
+        signal.signal(signal.SIGTERM, stop_simulation_handler)
+        signal.signal(signal.SIGALRM, stop_tshark_handler)
         print('Press Ctrl+C')
         signal.alarm(args.recon)
         signal.pause()

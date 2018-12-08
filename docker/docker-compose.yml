@@ -19,9 +19,12 @@ services:
     build: ./recon
     environment:
       - "IMANDIRA_URL=http://imandra-server:3000"
+      - "PARTICIPANT_NETWORK=docker_default"
     volumes:
       - ./recon:/opt/recon
       - ../tests/data:/tmp/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    privileged: true
     working_dir: /opt/recon
     command: ./recon.py --data_dir /tmp/data --source "CN=a_1" --target "CN=b_1"
     # command: sleep infinity
