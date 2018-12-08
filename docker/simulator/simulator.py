@@ -17,10 +17,21 @@ def main(argv=sys.argv[1:]):
     parser = argparse.ArgumentParser()
     parser.add_argument('--data_dir', required=True)
     parser.add_argument('--recon', required=True, type=int)
+    parser.add_argument('--restart', action="store_true")
     args, argv = parser.parse_known_args(argv)
     credentials_dir = Path(os.environ['ROS_SECURITY_ROOT_DIRECTORY'])
     data_dir = Path(args.data_dir)
     docker_client = docker.from_env()
+
+    if args.restart is True:
+        for container in docker_client.containers.list():
+            container_labels = container.attrs['Config']['Labels']
+            print('container_labels: ', container_labels)
+            if 'simulation' in container_labels:
+                if container_labels['simulation'] == 'participant':
+                    print('Restarting: {}'.format(
+                        container.attrs['Name']))
+                    container.kill()
 
     local_container_id = subprocess.check_output(
         'head -1 /proc/self/cgroup | cut -d/ -f3',

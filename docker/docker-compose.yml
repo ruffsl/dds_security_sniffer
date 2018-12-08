@@ -58,5 +58,5 @@ services:
     network_mode: "host"
     privileged: true
     working_dir: /opt/simulator
-    command: ./simulator.py --data_dir /tmp/data --ttl 3 --recon 10
+    command: ./simulator.py --data_dir /tmp/data --ttl 3 --recon 10 --restart
     # command: sleep infinity
