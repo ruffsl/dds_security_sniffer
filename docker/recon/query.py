@@ -60,11 +60,11 @@ def check_route(path, source, target, check_func):
     with open(os.path.join(path, 'data.pickle'), 'rb') as f:
         perm_map = pickle.load(f)
     if source and target:
-        print("Path from {} to {}: {}".format(source, target, checkReachability(G, source, target, perm_map, check_func)))
+        return checkReachability(G, source, target, perm_map, check_func)
     elif source:
-        print("Nodes to take over from source {}: {}".format(source, findTargets(G, source, perm_map, check_func)))
+        return findTargets(G, source, perm_map, check_func)
     elif target:
-        print("Nodes to take over from target {}: {}".format(target, findSources(G, target, perm_map, check_func)))
+        return findSources(G, target, perm_map, check_func)
 
 def get_ip(perm_map, subject):
     ip_str = os.path.basename(perm_map[subject])
