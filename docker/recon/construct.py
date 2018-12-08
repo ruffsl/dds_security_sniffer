@@ -138,14 +138,14 @@ def plot_graph_figure(G, file_name, view='pdf'):
     A.add_subgraph()
     if view == 'pdf':
         A.draw(file_name + '.' + 'pdf', prog='dot')
-        display(IFrame(file_name + '.' + view, width=950, height=300))
+        #display(IFrame(file_name + '.' + view, width=950, height=300))
     elif view == 'png':
         A.draw(file_name + '.' + 'png', prog='dot')
         A.draw(file_name + '.' + 'pdf', prog='dot')
-        display(Image(file_name + '.' + view))
+        #display(Image(file_name + '.' + view))
     elif view == 'svg':
         A.draw(file_name + '.' + 'svg', prog='dot')
-        display(SVG(file_name + '.' + view))
+        #display(SVG(file_name + '.' + view))
     else:
         raise ValueError("No view option: {}".format(view))
 
