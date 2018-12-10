@@ -1,0 +1,46 @@
+<dds>
+  <permissions>
+    <grant name="grid_2_0">
+      <subject_name>CN=grid_2_0</subject_name>
+      <validity>
+        <not_before>2013-10-26T00:00:00</not_before>
+        <not_after>2023-10-26T22:45:30</not_after>
+      </validity>
+      <allow_rule>
+        <domains>
+          <id>0</id>
+        </domains>
+        <publish>
+          <topics>
+            <topic>rt/dqk70yoXYGwWzUMb/LaVG9Ydx6stp935QzCPlZNbIGs=</topic>
+            <topic>rt/5SR9Mdcph2WlBk03uQ3fHbI+5Ly9AzeeEfEKm6NglPc=</topic>
+            <topic>rt/RXC2j2WAXH87viAjP0B6FEEujgZrqZUOqorzOXD6czA=</topic>
+          </topics>
+        </publish>
+        <subscribe>
+          <topics>
+            <topic>rt/7oeoZYrR6BqJfoZlqs+9nKm1+IfOE8nFWHSsdAIp9kg=</topic>
+          </topics>
+        </subscribe>
+      </allow_rule>
+      <allow_rule>
+        <domains>
+          <id>0</id>
+        </domains>
+        <publish>
+          <topics>
+            <topic>rt/dqk70yoXYGwWzUMb/LaVG9Ydx6stp935QzCPlZNbIGs=</topic>
+            <topic>rt/5SR9Mdcph2WlBk03uQ3fHbI+5Ly9AzeeEfEKm6NglPc=</topic>
+            <topic>rt/RXC2j2WAXH87viAjP0B6FEEujgZrqZUOqorzOXD6czA=</topic>
+          </topics>
+        </publish>
+        <subscribe>
+          <topics>
+            <topic>rt/7oeoZYrR6BqJfoZlqs+9nKm1+IfOE8nFWHSsdAIp9kg=</topic>
+          </topics>
+        </subscribe>
+      </allow_rule>
+      <default>DENY</default>
+    </grant>
+  </permissions>
+</dds>
