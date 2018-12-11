@@ -15,7 +15,7 @@ from query import check_route
 from recon_agent import ReconAgent
 
 
-    
+
 def detach_container(docker_client, targets_dict, network_id):
     docker_network = docker_client.networks.get(network_id)
     container_dict = {}
@@ -54,8 +54,9 @@ def main(argv=sys.argv[1:]):
         source=args.source,
         target=args.target,
         check_func=recon_agent.instance_reachabile)
-    
-    targets_dict.pop(args.target, None)    
+
+    targets_dict.pop(args.target, None)
+    print("Nodes to take over: ", targets_dict)
     detach_container(docker_client, targets_dict, network_id)
 
     #
